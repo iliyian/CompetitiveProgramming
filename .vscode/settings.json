@@ -1,6 +1,8 @@
 {
   "files.associations": {
     "format": "cpp",
-    "ostream": "cpp"
+    "ostream": "cpp",
+    "bit": "cpp",
+    "algorithm": "cpp"
   }
 }
