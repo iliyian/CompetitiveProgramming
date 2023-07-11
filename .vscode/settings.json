@@ -3,6 +3,7 @@
     "format": "cpp",
     "ostream": "cpp",
     "bit": "cpp",
-    "algorithm": "cpp"
+    "algorithm": "cpp",
+    "*.tcc": "cpp"
   }
 }
