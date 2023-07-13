@@ -4,6 +4,7 @@
     "ostream": "cpp",
     "bit": "cpp",
     "algorithm": "cpp",
-    "*.tcc": "cpp"
+    "*.tcc": "cpp",
+    "iostream": "cpp"
   }
 }
