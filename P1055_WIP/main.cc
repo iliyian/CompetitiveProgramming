@@ -15,8 +15,9 @@ int main() {
     }
   }
   int mod = sum % 11;
+  char lastc = mod < 10 ? mod + '0' : 'X';
   // cout << "mod=" << mod << endl;
-  if (isbn.back() - '0' == mod) cout << "Right";
-  else cout << isbn.substr(0, len-1) << (mod < 10 ? mod : 'X');
+  if (isbn.back() == lastc) cout << "Right";
+  else cout << isbn.substr(0, len-1) << lastc;
   return 0;
 }
