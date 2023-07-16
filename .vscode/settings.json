@@ -5,6 +5,10 @@
     "bit": "cpp",
     "algorithm": "cpp",
     "*.tcc": "cpp",
-    "iostream": "cpp"
+    "iostream": "cpp",
+    "string": "cpp",
+    "unordered_map": "cpp",
+    "unordered_set": "cpp",
+    "string_view": "cpp"
   }
 }
