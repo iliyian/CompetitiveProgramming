@@ -46,14 +46,9 @@ int main() {
     for (int j = 0; j < n; j++) {
       char ch = getchar();
       sqr2[i][j] = ch == '@' ? 1 : 0;
-   c }
+    }
     getchar();
     getchar();
-  }
-
-  if (sqr1 == sqr2) {
-    printf("6");
-    return 0;
   }
 
   int checkT = checkTurn(sqr1, sqr2);
@@ -73,6 +68,11 @@ int main() {
   }
   flip(sqr1);
 
+  if (sqr1 == sqr2) {
+    printf("6");
+    return 0;
+  }
+  
   // for (int i = 0; i < n; i++) {
   //   for (int j = 0; j < n; j++)
   //     printf("%c", sqr1[i][j] ? '@' : '-');
