@@ -69,7 +69,7 @@ Big operator * (const Big &a, const Big &b) {
   for (int i = 0; i < a.size(); i++) {
     for (int j = 0; j < b.size(); j++) {
       c[i + j] += a[i] * b[j];
-      if (c[i + j] >= BASE) {
+      if (c[i + j] >= BASE) { // 如果不判，导致c[i+j+1]必然加上不等于零的数
         c[i + j + 1] += c[i + j] / BASE;
         c[i + j] %= BASE;
       }
