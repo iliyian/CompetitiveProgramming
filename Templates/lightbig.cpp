@@ -39,6 +39,7 @@ void add(int a[], int b[], int c[]) {
   }
 }
 
+// if a < b, use sub(b, a, c) instead.
 void sub(int a[], int b[], int c[]) {
   clear(c);
 
