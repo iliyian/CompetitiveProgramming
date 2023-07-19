@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-vector<vector<int>> dp;
+array<array<int, 1000>, 1000> dp{};
 
 int main() {
   int n;
