@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+using namespace std;
 const int N = int(1e7) + 10;
 
 bool vis[N+1];
@@ -31,6 +32,9 @@ int main() {
   freopen("P7960_8.in", "r", stdin);
   freopen("data.out", "w", stdout);
   
+  // ios::sync_with_stdio(false);
+  // cin.tie(0);
+  
   memset(vis, 0, sizeof(vis));
   for (int i = 0; i <= N; i++) {
     if (vis[i]) continue;
@@ -38,18 +42,18 @@ int main() {
       for (int j = 1; i * j <= N; j++) vis[i * j] = 1;
   }
 
-  int n;
-  scanf("%d", &n);
+  int n = read();
 
   for (int i = 0; i < n; i++) {
     int a = read();
     if (vis[a]) putchar('-'), putchar('1'), putchar('\n');
-    else for (int j = a+1; j <= N; j++)
-      if (!vis[j]) {
-        write(j);
-        putchar('\n');
-        break;
-      }
+    else {
+      for (int j = a+1; j <= N; j++)
+        if (!vis[j]) {
+          write(j); putchar('\n');
+          break;
+        }
+    }
   }
 
   return 0;

@@ -1,3 +1,5 @@
+// 审题害我..
+
 #include <cstdio>
 #include <algorithm>
 #include <vector>
@@ -34,7 +36,7 @@ int main() {
       + 4000 * (s.finalGrd > 85 && s.classGrd > 80)
       + 2000 * (s.finalGrd > 90)
       + 1000 * (s.finalGrd > 85 && fromW == 'Y')
-      + 850 * (s.finalGrd > 80 && isMo == 'Y');
+      + 850 * (s.classGrd > 80 && isMo == 'Y');
 
     sum += s.prize;
 
@@ -43,7 +45,7 @@ int main() {
 
   sort(stus.begin(), stus.end(), cmp);
   
-  printf("%s\n%d\n%d", stus[0].name, stus[0].prize, sum);
+  printf("%s\n%d\n%lld", stus[0].name, stus[0].prize, sum);
   return 0;
 }
 
