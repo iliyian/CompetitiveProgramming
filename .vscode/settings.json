@@ -10,5 +10,6 @@
     "unordered_map": "cpp",
     "unordered_set": "cpp",
     "string_view": "cpp"
-  }
+  },
+  "C_Cpp.errorSquiggles": "enabled"
 }
