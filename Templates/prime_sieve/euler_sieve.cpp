@@ -1,9 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const int N = 1000000;
+const int N = 100000000;
 bitset<100000000> vis;
-int pri[1000000], cnt = 0;
+int pri[10000000], cnt = 0;
 
 int main() {
   vis[1] = vis[0] = false;
