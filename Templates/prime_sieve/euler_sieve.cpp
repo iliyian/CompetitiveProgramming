@@ -7,7 +7,6 @@ int pri[10000000], cnt = 0;
 
 int main() {
   freopen("prime.in", "w", stdout);
-  vis[1] = vis[0] = false;
   for (int i = 2; i <= N; i++) {
     if (!vis[i]) {
       pri[cnt++] = i;
