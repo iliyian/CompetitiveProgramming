@@ -88,14 +88,22 @@ void testOptimized() {
 
 int main() {
   freopen("prime.in", "r", stdin);
-  freopen("prime.out", "w", stdout);
+  freopen("test.out", "w", stdout);
   ios::sync_with_stdio(false); cin.tie(0);
   
   genPrime();
-  // -O3 primes within 1e8. Test respectively.
-  // testStdio(); //Test stdio 4.689547 seconds.
-  // testIostream(); Test iostream 1.37408 seconds.
-  testOptimized(); // write non-recursion: Test optimized 2.10872 seconds. Recursion: Test optimized 2.15305 seconds.
+  // Read & Write primes within 1e8. Test respectively.
+  testStdio(); 
+  // Test stdio 3.351424 seconds. -O2
+  // Test stdio 3.215607 seconds. -O0
+
+  // testIostream();
+  // Test iostream 0.981405 seconds. -O2
+  // Test iostream 0.916956 seconds. -O0
+
+  // testOptimized();
+  // write non-recursion: Test optimized 1.47253 seconds. -O2
+  // write non-recursion: Test optimized 1.61151 seconds. -O0
   
   return 0;
 }
