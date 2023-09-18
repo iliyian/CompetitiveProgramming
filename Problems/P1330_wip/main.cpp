@@ -4,31 +4,38 @@
 using namespace std;
 
 int color[10001], n, m;
-bitset<10001> vis;
 vector<vector<int>> g;
 
-int bfs() {
+void restore(int s, int clr) {
   queue<int> q;
-  memset(color, 0x3f, sizeof(color));
-  int ans = 0;
-  for (int i = 1; i <= n; i++)
-    if (color[i] == 0x3f3f3f3f) {
-      color[i] = 0;
-      int cnt = 1;
-      while (!q.empty()) {
-        int u = q.front(); q.pop();
-        for (int v : g[u]) {
-          if (color[v] == (color[u] ^ 1)) continue;
-          if (color[v] == color[u]) {
-            return 0x3f3f3f3f;
-          }
-          color[v] = color[u] ^ 1;
-          q.push(v);
-          cnt += color[v];
-        }
+  q.push(s);
+  while (!q.empty()) {
+    int u = q.front(); q.pop();
+    if (color[u] == 0x3f3f3f3f) continue;
+    color[u] = 0x3f3f3f3f;
+    for (int v : g[u])
+      q.push(v);
+  }
+}
+
+int bfs(int s, int clr) {
+  queue<int> q;
+  color[s] = clr;
+  q.push(s);
+  int ans = clr;
+  while (!q.empty()) {
+    int u = q.front(); q.pop();
+    for (int v : g[u]) {
+      if (color[v] == 0x3f3f3f3f) {
+        q.push(v);
+        color[v] = color[u] ^ 1;
+        ans += color[v];
+      } else if (color[v] == color[u]) {
+        restore(s, clr);
+        return 0x3f3f3f3f;
       }
-      ans += cnt;
     }
+  }
   return ans;
 }
 
@@ -43,10 +50,12 @@ int main() {
     g[u].push_back(v);
     g[v].push_back(u);
   }
-  int ans = bfs();
-  if (ans == 0x3f3f3f3f)
-    cout << "Impossible";
-  else
-    cout << ans;
+  memset(color, 0x3f, sizeof(color));
+  int ans = 0;
+  for (int i = 1; i <= n; i++) {
+    if (color[i] == 0x3f3f3f3f);
+      ans += min(bfs(i, 1), bfs(i, 0));
+  }
+  cout << ans;
   return 0;
 }
