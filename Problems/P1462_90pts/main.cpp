@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#define int long long
 using namespace std;
 
 struct Edge {
@@ -14,10 +15,9 @@ struct Node {
 };
 priority_queue<Node> q;
 
-int f[10001];
-bitset<10001> vis;
+int f[10001], visb[10001];
 
-int main() {
+signed main() {
   freopen("data.in", "r", stdin);
   int n, m, b;
   cin >> n >> m >> b;
@@ -25,6 +25,7 @@ int main() {
   for (int i = 1; i <= n; i++) {
     cin >> f[i];
   }
+  memset(visb, 0x3f, sizeof(visb));
   for (int i = 0; i < m; i++) {
     int a, b, c;
     cin >> a >> b >> c;
@@ -39,11 +40,11 @@ int main() {
       cout << maxf;
       return 0;
     }
-    if (vis[u]) continue;
-    vis[u] = true;
+    if (life < 0) continue;
+    if (visb[u] <= life && maxf <= f[u]) continue;
+    visb[u] = life;
     for (auto &ed : g[u]) {
       int v = ed.v, c = ed.c;
-      if (c > life) continue;
       q.push({v, life - c, max(maxf, f[v])});
     }
   }
