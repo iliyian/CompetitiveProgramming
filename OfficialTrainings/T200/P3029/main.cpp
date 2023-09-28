@@ -1,41 +1,40 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-map<int, int> a;
-int n, mind = 1 << 30, maxd = -1;;
-set<int> s, k;
-
-bool check(int len) {
-  for (int l = mind; l < maxd - len; l++) {
-    k.clear();
-    for (int j = l; j <= l + len; j++)
-      if (a[j])
-        k.insert(a[j]);
-    if (k.size() == s.size()) {
-      return true;
-    }
+struct Node {
+  int x, id;
+  bool operator < (const Node &b) const {
+    return x < b.x;
   }
-  return false;
-}
+} nodes[50000];
 
 int main() {
+  ios::sync_with_stdio(false); cin.tie(0);
   freopen("data.in", "r", stdin);
+  int n;
   cin >> n;
-  for (int i = 0; i < n; i++)  {
-    int x, id;
-    cin >> x >> id;
-    a[x] = id;
-    mind = min(mind, x);
-    maxd = max(maxd, x);
-    s.insert(id);
+  queue<Node> q;
+  map<int, int> m;
+  set<int> s, t;
+  int cnt = 0;
+  for (int i = 0; i < n; i++) {
+    cin >> nodes[i].x >> nodes[i].id;
+    s.insert(nodes[i].id);
   }
-  int ans = -1, l = 1, r = maxd - mind;
-  while (l <= r) {
-    int mid = l + (r - l) / 2;
-    if (check(mid)) r = mid - 1, ans = mid;
-    else l = mid + 1;
+  sort(nodes, nodes + n);
+  int ans = 0x3f3f3f3f;
+  for (int i = 0; i < n; i++) {
+    int x = nodes[i].x, id = nodes[i].id;
+    if (m[id])
+      m[id]++;
+    else
+      m[id] = 1, cnt++, t.insert(id);
+    q.push({x, id});
+    while (m[q.front().id] >= 2) --m[q.front().id], q.pop();
+    if (t.size() == s.size()) {
+      ans = min(ans, x - q.front().x);
+    }
   }
-  if (ans == -1) cout << r;
-  else cout << ans;
+  cout << ans;
   return 0;
 }
