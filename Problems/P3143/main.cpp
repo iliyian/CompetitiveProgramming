@@ -1,18 +1,26 @@
+// double-pointer
+
 #include <bits/stdc++.h>
+#define N 50002
 using namespace std;
 
-int a[50000];
+int a[N], c[N];
 
 int main() {
-  int n, k, maxn = -1;
+  freopen("data.in", "r", stdin);
+  ios::sync_with_stdio(false); cin.tie(0);
+  int n, k;
   cin >> n >> k;
-  map<int, int> m;
-  for (int i = 0; i < n; i++)
-    cin >> a[i], m[a[i]]++, maxn = max(maxn, a[i]);
-  sort(a, a + n);
-  int ans = 0;
-  for (int i = 1; i <= maxn - k; i++) {
-    ans += a[i];
-    if (i > k)
+  for (int i = 1; i <= n; i++)
+    cin >> a[i];
+  sort(a + 1, a + n + 1);
+  int ans = 0, r = 2, leftmax = 0;
+  for (int i = 1; i <= n; i++) {
+    while (a[r] <= a[i] + k && r <= n) r++;
+    c[r] = max(c[r], r - i);
+    leftmax = max(leftmax, c[i]);
+    ans = max(ans, leftmax + r - i);
   }
+  cout << ans;
+  return 0;
 }
