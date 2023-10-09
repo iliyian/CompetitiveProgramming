@@ -1,13 +1,13 @@
 #include <bits/stdc++.h>
-#define N 100001
-#define int long long 
+#define N 100002
+#define int long long
 using namespace std;
 
-int a[N * 4], b[N * 4], d[N * 4];
+array<int, 4 * N> a, dat, d, b;
 
 void build(int s, int t, int p) {
   if (s == t) {
-    d[p] = a[s];
+    d[p] = dat[s];
     return;
   }
   int mid = s + (t - s >> 1);
@@ -23,26 +23,24 @@ void maintain(int s, int t, int p) {
   b[p] = 0;
 }
 
-// [l, r], [s, t]
-int getSum(int l, int r, int s, int t, int p) {
+int query(int l, int r, int s, int t, int p) {
   if (l <= s && t <= r) return d[p];
   int mid = s + (t - s >> 1), sum = 0;
   if (b[p]) maintain(s, t, p);
-  if (l <= mid) sum += getSum(l, r, s, mid, p << 1);
-  if (r > mid) sum += getSum(l, r, mid + 1, t, p << 1 | 1);
+  if (l <= mid) sum += query(l, r, s, mid, p << 1);
+  if (r > mid) sum += query(l, r, mid + 1, t, p << 1 | 1);
   return sum;
 }
 
-// [l, r], [s, t]
-void update(int l, int r, int s, int t, int p, int c) {
+void add(int l, int r, int s, int t, int p, int c) {
   if (l <= s && t <= r) {
     d[p] += (t - s + 1) * c, b[p] += c;
     return;
   }
   int mid = s + (t - s >> 1);
   if (b[p] && s != t) maintain(s, t, p);
-  if (l <= mid) update(l, r, s, mid, p << 1, c);
-  if (r > mid) update(l, r, mid + 1, t, p << 1 | 1, c);
+  if (l <= mid) add(l, r, s, mid, p << 1, c);
+  if (r > mid) add(l, r, mid + 1, t, p << 1 | 1, c);
   d[p] = d[p << 1] + d[p << 1 | 1];
 }
 
@@ -51,17 +49,23 @@ signed main() {
   freopen("data.in", "r", stdin);
   int n, m;
   cin >> n >> m;
-  for (int i = 1; i <= n; i++)
+  for (int i = 1; i <= n; i++) {
     cin >> a[i];
+    dat[i] = a[i] - a[i - 1];
+  }
   build(1, n, 1);
   for (int i = 0; i < m; i++) {
-    int op, l, r, c;
-    cin >> op >> l >> r;
+    int op, q, l, r, K, D;
+    cin >> op;
     if (op == 1) {
-      cin >> c;
-      update(l, r, 1, n, 1, c);
+      cin >> l >> r >> K >> D;
+      add(l, l, 1, n, 1, K);
+      if (l != r) add(l + 1, r, 1, n, 1, D);
+      // 特殊值排除法
+      if (r != n) add(r + 1, r + 1, 1, n, 1, - K - (r - l) * D);
     } else {
-      cout << getSum(l, r, 1, n, 1) << '\n';
+      cin >> q;
+      cout << query(1, q, 1, n, 1) << '\n';
     }
   }
   return 0;
