@@ -5,6 +5,10 @@ using namespace std;
 
 int a[N * 4], b[N * 4], d[N * 4];
 
+void pushup(int p) {
+  d[p] = d[p << 1 | 1] + d[p << 1 | 1];
+}
+
 void build(int s, int t, int p) {
   if (s == t) {
     d[p] = a[s];
@@ -13,7 +17,7 @@ void build(int s, int t, int p) {
   int mid = s + (t - s >> 1);
   build(s, mid, p << 1);
   build(mid + 1, t, p << 1 | 1);
-  d[p] = d[p << 1] + d[p << 1 | 1];
+  pushup(p);
 }
 
 void maintain(int s, int t, int p) {
@@ -43,7 +47,7 @@ void update(int l, int r, int s, int t, int p, int c) {
   if (b[p] && s != t) maintain(s, t, p);
   if (l <= mid) update(l, r, s, mid, p << 1, c);
   if (r > mid) update(l, r, mid + 1, t, p << 1 | 1, c);
-  d[p] = d[p << 1] + d[p << 1 | 1];
+  pushup(p);
 }
 
 signed main() {

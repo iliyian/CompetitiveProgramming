@@ -11,14 +11,13 @@ struct Matrix {
     return false;
   }
 } src, trg;
-set<Matrix> s;
 
 int h(const Matrix &a) {
   int sum = 0;
   for (int i = 0; i < 5; i++)
     for (int j = 0; j < 5; j++)
       sum += a.a[i][j] != trg.a[i][j];
-  return sum;
+  return max(0, sum - 1); // ??????
 }
 
 struct Node {
@@ -28,7 +27,6 @@ struct Node {
     return t + h(mat) > b.t + h(b.mat);
   }
 };
-priority_queue<Node> q;
 
 int dx[] = {-2, -1, 1, 2, 2, 1, -1, -2}, dy[] = {1, 2, 2, 1, -1, -2, -2, -1};
 
@@ -44,13 +42,16 @@ void solve() {
       else if (ch == '*') src.a[i][j] = 0, sx = i, sy = j;
     }
   }
+
+  set<Matrix> s;
+  priority_queue<Node> q;
+  
   q.push({src, 0, sx, sy});
   while (!q.empty()) {
     Node node = q.top(); q.pop();
     Matrix &mat = node.mat;
     int t = node.t, x = node.x, y = node.y;
-    int hmat = h(mat);
-    if (hmat == 0) {
+    if (h(mat) == 0) {
       cout << t << '\n';
       return;
     }
@@ -59,7 +60,7 @@ void solve() {
       int xx = x + dx[i], yy = y + dy[i];
       if (xx < 0 || xx >= 5 || yy < 0 || yy >= 5) continue;
       swap(mat.a[xx][yy], mat.a[x][y]);
-      if (!s.count(mat) && t + 1 + h(mat) <= 15)
+      if (t + 1 + h(mat) <= 15 && !s.count(mat))
         s.insert(mat), q.push({mat.a, t + 1, xx, yy});
       swap(mat.a[xx][yy], mat.a[x][y]);
     }
