@@ -20,7 +20,7 @@ void build(int s, int t, int p) {
   pushup(p);
 }
 
-void maintain(int s, int t, int p) {
+void pushdown(int s, int t, int p) {
   int mid = s + (t - s >> 1);
   d[p << 1] += b[p] * (mid - s + 1), d[p << 1 | 1] += b[p] * (t - mid);
   b[p << 1] += b[p], b[p << 1 | 1] += b[p];
@@ -31,7 +31,7 @@ void maintain(int s, int t, int p) {
 int getSum(int l, int r, int s, int t, int p) {
   if (l <= s && t <= r) return d[p];
   int mid = s + (t - s >> 1), sum = 0;
-  if (b[p]) maintain(s, t, p);
+  if (b[p]) pushdown(s, t, p);
   if (l <= mid) sum += getSum(l, r, s, mid, p << 1);
   if (r > mid) sum += getSum(l, r, mid + 1, t, p << 1 | 1);
   return sum;
@@ -44,7 +44,7 @@ void update(int l, int r, int s, int t, int p, int c) {
     return;
   }
   int mid = s + (t - s >> 1);
-  if (b[p] && s != t) maintain(s, t, p);
+  if (b[p] && s != t) pushdown(s, t, p);
   if (l <= mid) update(l, r, s, mid, p << 1, c);
   if (r > mid) update(l, r, mid + 1, t, p << 1 | 1, c);
   pushup(p);

@@ -19,6 +19,7 @@ int main() {
     while (!q.empty() && f[q.back()] < f[i - L])
       q.pop_back();
     q.push_back(i - L);
+    // q.front() == before == i - L
     f[i] = f[q.front()] + a[i];
     if (i + R > N)
       ans = max(ans, f[i]);

@@ -1,19 +1,24 @@
 #include <bits/stdc++.h>
 #define N 1000001
-#define inf 0x3f3f3f3f
+#define inf 0x3f3f3f3f3f3f3f3f
+// 切切有八个3f
+#define int long long
 using namespace std;
 
-int a[N], d[N * 4];
+int a[N], d[N << 2];
 
 struct Node {
-  int t1 = inf, t2 = 0;
-} b[N * 4];
+  int t1, t2;
+  Node() {
+    t1 = inf;
+  }
+} b[N << 2];
 
 void pushup(int p) {
   d[p] = max(d[p << 1], d[p << 1 | 1]);
 }
 
-void make(int p, int c, int op) {
+void modify(int p, int c, int op) {
   if (op == 1) {
     d[p] = b[p].t1 = c;
     b[p].t2 = 0;
@@ -29,19 +34,19 @@ void make(int p, int c, int op) {
 
 void pushdown(int p) {
   if (b[p].t1 != inf) {
-    make(p << 1, b[p].t1, 1);
-    make(p << 1 | 1, b[p].t1, 1);
+    modify(p << 1, b[p].t1, 1);
+    modify(p << 1 | 1, b[p].t1, 1);
     b[p].t1 = inf;
   } else if (b[p].t2) {
-    make(p << 1, b[p].t2, 2);
-    make(p << 1 | 1, b[p].t2, 2);
+    modify(p << 1, b[p].t2, 2);
+    modify(p << 1 | 1, b[p].t2, 2);
     b[p].t2 = 0;
   }
 }
 
 void update(int l, int r, int s, int t, int p, int c, int op) {
   if (l <= s && t <= r) {
-    make(p, c, op);
+    modify(p, c, op);
     return;
   }
   int mid = s + (t - s >> 1);
@@ -71,7 +76,7 @@ int query(int l, int r, int s, int t, int p) {
   return ans;
 }
 
-int main() {
+signed main() {
   ios::sync_with_stdio(false); cin.tie(0);
   freopen("data.in", "r", stdin);
   int n, q;
