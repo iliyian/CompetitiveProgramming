@@ -1,3 +1,7 @@
 *.exe
+<<<<<<< HEAD
 *.out
 *.ans
+=======
+*.out
+>>>>>>> d697fdf (Add .gitignore)
