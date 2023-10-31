@@ -3,6 +3,11 @@ using namespace std;
 
 int a[101][101], f[101][101], pre[101][101];
 
+void print(int k, int i) {
+  if (i > 1) print(pre[i][k], i - 1);
+  cout << k << ' ';
+}
+
 int main() {
   ios::sync_with_stdio(false); cin.tie(0);
   freopen("data.in", "r", stdin);
@@ -11,18 +16,25 @@ int main() {
   for (int i = 1; i <= F; i++)
     for (int j = 1; j <= V; j++)
       cin >> a[i][j];
-  memset(f, 0, sizeof(f));
-  for (int i = 1; i <= F; i++)
-    for (int j = i; j <= V - F + i + 1; j++) {
-      int k = max_element(f[i - 1] + 1, f[i - 1] + j) - f[i - 1] - 1;
-      f[i][j] = a[i][j] + f[i - 1][k];
-      pre[i][j] = k;
+
+  // something MUST todo
+  for (int i = 1; i <= V - F + 1; i++)
+    f[1][i] = a[1][i];
+  for (int i = 2; i <= F; i++)
+    for (int j = i; j <= V - F + i; j++) {
+      for (int k = 1; k < j; k++) {
+        if (f[i - 1][k] + a[i][j] > f[i][j]) {
+          f[i][j] = f[i - 1][k] + a[i][j];
+          pre[i][j] = k;
+        }
+      }
     }
-  int k = max_element(f[F] + 1, f[F] + V - F) - f[F] - 1;
-  cout << f[F][k] << '\n';
-  for (int i = F; i >= 1; i--) {
-    cout << a[i][k] << ' ';
-    k = pre[i][k];
-  }
+  int k = -1, maxn = -1;
+  for (int i = F; i <= V; i++)
+    if (f[F][i] > maxn) {
+      k = i, maxn = f[F][i];
+    }
+  cout << maxn << '\n';
+  print(k, F);
   return 0;
 }
