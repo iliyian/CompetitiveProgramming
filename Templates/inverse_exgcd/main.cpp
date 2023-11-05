@@ -19,7 +19,7 @@ int main() {
   cin >> n >> p;
   inv[1] = 1;
   for (int i = 2; i <= n; i++) {
-    inv[i] = (long long)(p - p / i) * inv[p % i] % p;
+    inv[i] = (long long)(p - p / i) % p * inv[p % i] % p;
     cout << inv[i] << '\n';
     exgcd(i, p, x, y);
     x = (x % p + p) % p;
