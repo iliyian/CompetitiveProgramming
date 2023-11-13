@@ -1,6 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+#define CLR(v) memset(v, 0, sizeof(v))
+#define f(a, b, c) for (int a = b; a < c; a++)
+#define gd(a, b, c) for (int a = b; a >= c; a--)
+
 #define MAXN 9999
 // MAXN 是一位中最大的数字
 #define MAXSIZE 10024
@@ -162,8 +166,9 @@ Big Big::operator/(const int& b) const {
   Big res;
   int down = 0;
   gd(i, len - 1, 0) {
-    res.a[i] = (a[i] + down * (MAXN + 1)) / b;
-    down = a[i] + down * (MAXN + 1) - res.a[i] * b;
+    int cur = a[i] + down * (MAXN + 1);
+    res.a[i] = cur / b;
+    down = cur - res.a[i] * b;
   }
   res.len = len;
   while (res.len > 1 && res.a[res.len - 1] == 0) --res.len;
