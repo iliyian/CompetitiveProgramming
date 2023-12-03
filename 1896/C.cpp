@@ -6,33 +6,31 @@
 #define N 400005
 using namespace std;
 
-int a[N], b[N], aid[N], tmp[N];
+int a[N], b[N], idx[N], ans[N];
 
 void solve() {
   int n, x;
   cin >> n >> x;
-  for (int i = 1; i <= n; i++)
-    cin >> a[i];
-  for (int i = 1; i <= n; i++)
-    cin >> b[i];
-  iota(aid + 1, aid + 1 + n, 1);
-  sort(b + 1, b + 1 + n);
-  sort(aid + 1, aid + 1 + n, [](const int &x, const int &y) {
+  for (int i = 0; i < n; i++) cin >> a[i];
+  for (int i = 0; i < n; i++) cin >> b[i];
+  iota(idx, idx + n, 0);
+  sort(idx, idx + n, [&](const int &x, const int &y) {
     return a[x] < a[y];
   });
-  int cnt = 0;
-  copy(b + 1, b + 1 + n, tmp + 1);
-  copy(tmp + 1, tmp + 1 + x, b + 1 + n - x);
-  copy(tmp + 1 + x, tmp + 1 + n, b + 1);
-  for (int i = 1; i <= n; i++)
-    cnt += a[aid[i]] > b[i];
-  if (x != cnt) {
-    cout << "NO\n";
-    return;
-  }
-  cout << "YES\n";
-  for (int i = 1; i <= n; i++)
-    cout << b[i] << " \n"[i == n];
+  sort(b, b + n);
+  for (int i = 0; i < x; i++)
+    ans[idx[n - x + i]] = b[i];
+    // ans后面x个是b前x小
+    // 同时对应a前x大
+  for (int i = x; i < n; i++)
+    ans[idx[i - x]] = b[i];
+  for (int i = 0; i < n; i++)
+    x -= a[i] > ans[i];
+  if (!x) {
+    cout << "YES\n";
+    for (int i = 0; i < n; i++)
+      cout << ans[i] << " \n"[i == n - 1];
+  } else cout << "NO\n";
 }
 
 int main() {
