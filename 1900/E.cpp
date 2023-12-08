@@ -1,34 +1,37 @@
+// date: 2023/12/8
+// wa#n...: memset写太多了啊艹
+// 大批量数组初始化就应该一个for带过，
+
+// 顺便这题有一个新的tarjan模板？？？
+
 #include <bits/stdc++.h>
 #define N 200005
 // #define int long long
 using namespace std;
 
-int a[N], dfn[N], low[N], scc[N], s[N], sz[N], dfncnt = 0, tp = 0, sc = 0;
-bitset<N> ins;
+int a[N], dfn[N], low[N], scc[N], sz[N], dfncnt = 0, tp = 0, sc = 0;
 vector<vector<int>> g;
+stack<int> s;
 
 void tarjan(int u) {
   dfn[u] = low[u] = ++dfncnt;
-  s[++tp] = u;
-  ins[u] = true;
+  s.push(u);
   for (auto v : g[u]) {
     if (!dfn[v]) {
       tarjan(v);
       low[u] = min(low[u], low[v]);
-    } else if (ins[v]) {
+    } else if (!scc[v]) {
       low[u] = min(low[u], dfn[v]);
     }
   }
   if (dfn[u] == low[u]) {
     ++sc;
-    while (s[tp] != u) {
-      scc[s[tp]] = sc;
+    while (1) {
+      int x = s.top(); s.pop();
+      scc[x] = sc;
       sz[sc]++;
-      ins[s[tp--]] = false;
+      if (x == u) break;
     }
-    scc[s[tp]] = sc;
-    sz[sc]++;
-    ins[s[tp--]] = false;
   }
 }
 
@@ -43,14 +46,14 @@ void solve() {
   g.assign(n + 1, vector<int>());
   sccg.assign(n + 1, vector<int>());
   sc = 0;
-  memset(dfn, 0, sizeof(dfn));
-  memset(low, 0, sizeof(low));
-  memset(scc, 0, sizeof(scc));
-  memset(s, 0, sizeof(s));
-  memset(scca, 0, sizeof(scca));
-  memset(f, 0, sizeof(f));
-  memset(sz, 0, sizeof(sz));
-  ins.reset();
+  for (int i = 1; i <= n; i++)
+    dfn[i] = low[i] = scc[i] = scca[i] = sz[i] = 0, f[i] = {0, 0};
+  // memset(dfn, 0, sizeof(dfn));
+  // memset(low, 0, sizeof(low));
+  // memset(scc, 0, sizeof(scc));
+  // memset(scca, 0, sizeof(scca));
+  // memset(f, 0, sizeof(f));
+  // memset(sz, 0, sizeof(sz));
 
   for (int i = 1; i <= n; i++)
     cin >> a[i];
