@@ -48,13 +48,14 @@ void build(int s, int t, int p) {
 }
 
 void modify(int x, int s, int t, int p) {
-  if (s <= x && x <= t) {
+  if (x=) {
     d[p] = s;
     return;
   }
   int mid = s + (t - s >> 1);
   if (x <= mid) modify(x, s, mid, ls);
   if (x > mid) modify(x, mid + 1, t, rs);
+  pushup(p);
 }
 
 int query(int l, int r, int s, int t, int p) {
@@ -82,6 +83,7 @@ int main() {
   ios::sync_with_stdio(false); cin.tie(0);
   freopen("data.in", "r", stdin);
   cin >> n >> q;
+  g.resize(n + 1);
   for (int i = 1; i < n; i++) {
     int u, v;
     cin >> u >> v;
@@ -90,13 +92,14 @@ int main() {
   dep[1] = 1;
   dfs1(1);
   dfs2(1, 1);
+
   build(1, n, 1);
-  modify(1);
+  modify(1, 1, n, 1);
   for (int i = 0; i < q; i++) {
     char op;
     int x;
     cin >> op >> x;
-    if (op == 'C') modify()
+    if (op == 'C') modify(x, 1, n, 1);
     else cout << rnk[hldquery(1, x)] << '\n';
   }
 }
