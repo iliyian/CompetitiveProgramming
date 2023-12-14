@@ -10,25 +10,11 @@ void solve() {
   cin >> n;
   for (int i = 1; i <= n; i++)
     cin >> a[i];
-  int l = a[n - 1], r = a[n], ans = 0;
-  // int ans = 0;
-  for (int i = n - 2; i >= 0; i--) {
-    // ans += ceil((a[i] + 0.1) / a[i + 1]);
-    if (l > r) {
-      int cnt, p;
-      if (l > r * 2) {
-        p = (int)(ceil(log2(double(l) / r)));
-      } else p = 1;
-      cnt = (1 << p) - 1;
-
-      if (r == 1) cnt = l - 1, r = 1;
-      else r = l >> p;
-
-      ans += cnt;
-      l = a[i];
-    } else {
-      l = a[i], r = a[i + 1];
-    }
+  int cur = a[n], ans = 0;
+  for (int i = n; i >= 2; i--) {
+    int t = ceil(double(a[i-1]) / a[i]);
+    a[i - 1] = a[i - 1] / t;
+    ans += t - 1;
   }
   cout << ans << '\n';
 }
