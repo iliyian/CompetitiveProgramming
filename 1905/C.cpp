@@ -5,38 +5,25 @@ using namespace std;
 void solve() {
   int n;
   cin >> n;
-  vector<char> a(n);
-  vector<int> id(n);
-  iota(id.begin(), id.end(), 0);
-  for (int i = 0; i < n; i++) {
-    cin >> a[i];
+  string str;
+  cin >> str;
+  vector<int> v;
+  for (int i = n - 1; i >= 0; i--)
+    if (v.empty() || str[i] >= str[v.back()])
+      v.push_back(i);
+  int j = 0;
+  reverse(v.begin(), v.end());
+  while (j < v.size() && str[v[0]] == str[v[j]]) {
+    j++;
   }
-  char minv = 'z' + 1;
-  for (int i = n - 1; i >= 1; i--) {
-    minv = min(minv, a[i]);
-    if (a[i - 1] > minv) 
+  for (int i = 0; i < v.size() - i - 1; i++) {
+    swap(str[v[i]], str[v[v.size() - i - 1]]);
   }
-
-                                               
-  // int leftmost = 0, rightmost = n - 1, ans = 0;
-  // bitset<N> vis;
-  // for (int i = 0; i < n; i++) {
-  //   int len = 0, cur = id[i];
-  //   vector<int> idx;
-  //   for (int j = id[i] + 1; j < n; j++) {
-  //     if (a[j] < a[j - 1]) len++, idx.push_back(j);
-  //     else len = 1, idx.clear();
-  //   }
-  //   if (!idx.empty() && idx.back() != id[rightmost]) {
-  //     cout << -1 << '\n';
-  //     return;
-  //   }
-  //   for (int j : idx) vis[j] = true;
-  //   vis[id[i]] = true;
-  //   while (rightmost > i && vis[id[rightmost]]) rightmost--;
-  //   ans += idx.size();
-  // }
-  // cout << ans << '\n';
+  if (is_sorted(str.begin(), str.end())) {
+    cout << v.size() - j << '\n';
+  } else {
+    cout << -1 << '\n';
+  }
 }
 
 int main() {
