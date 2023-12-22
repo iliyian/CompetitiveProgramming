@@ -7,35 +7,28 @@ void solve() {
   int n, m, k;
   cin >> n >> m >> k;
   if (k < n + m - 2) {
-    cout << "NO\n";
+    cout << "NO" << '\n';
     return;
   }
-  int d = m + n - k;
-  if (d & 1) {
-    cout << "NO\n";
+  if ((n + m - k) & 1) {
+    cout << "NO" << '\n';
     return;
   }
   cout << "YES\n";
-  memset(c, 0, sizeof(c)), memset(v, 0, sizeof(v));
-  int t = (k - n - m) / 4, col = 0;
-  for (int i = 0; i < m - 1; i++) {
-    c[0][i] = col;
-    col ^= 1;
-  }
-  for (int j = 0; j < n - 1; j++) {
-    v[j][m - 1] = col;
-    col ^= 1;
-  }
-  c[1][0] = c[0][0];
-  v[0][0] = v[0][1] = (c[0][0] ^ 1);
-  v[n - 2][m - 2] = v[n - 2][m - 1] ^ 1;
-  c[n - 1][m - 2] = c[n - 2][m - 2] = v[n - 2][m - 1];
-  for (int i = 0; i < n; i++)
-    for (int j = 0; j < m - 1; j++)
-      cout << (c[i][j] ? 'R' : 'B') << " \n"[j == m - 2];
-  for (int i = 0; i < n - 1; i++)
-    for (int j = 0; j < m; j++)
-      cout << (v[i][j] ? 'R' : 'B') << " \n"[j == m - 1];
+  for (int i = 1; i <= m - 1; i++)
+    c[1][i] = i & 1;
+  for (int i = m; i <= n + m - 2; i++)
+    v[i - m + 1][m] = i & 1;
+  c[2][1] = c[1][1] ^ 1;
+  v[1][1] = v[1][2] = c[1][1];
+  v[n - 1][m - 1] = v[n - 1][m];
+  c[n][m - 1] = c[n - 1][m - 1] = (v[n - 1][m] ^ 1);
+  for (int i = 1; i <= n; i++)
+    for (int j = 1; j <= m - 1; j++)
+      cout << (c[i][j] ? 'R' : 'B') << " \n"[j == m - 1];
+  for (int i = 1; i <= n - 1; i++)
+    for (int j = 1; j <= m; j++)
+      cout << (v[i][j] ? 'R' : 'B') << " \n"[j == m];
 }
 
 int main() {
