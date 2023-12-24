@@ -17,32 +17,49 @@ int getlen(int x) {
   return len;
 }
 
+int getsum(const string &str, int l, int r) {
+  int ans = 0;
+  for (int i = l; i <= r; i++)
+    ans += str[i] - '0';
+  return ans;
+}
+
 signed main() {
   ios::sync_with_stdio(false); cin.tie(0);
   freopen("C.in", "r", stdin);
+  freopen("C.out", "w", stdout);
 
   int n, ans = 0;
   cin >> n;
-  vector<string> strs;
+  vector<vector<int>> s(n);
+  vector<string> strs(n);
+  map<pair<int, int>, int> cnt;
   for (int i = 0; i < n; i++) {
-    string str;
-    cin >> str;
-    strs.push_back(str);
-    for (int j = 1; j <= str.size(); j++) {
-      sum[i][j] = str[j - 1] - '0' + sum[i][j - 1];
+    cin >> strs[i];
+    s[i].resize(strs.size() + 1);
+    strs[i] = '0' + strs[i];
+    for (int j = 1; j <= strs[i].size(); j++)
+      s[i][j] = s[i][j - 1] + strs[i][j] - '0';
+    cnt[make_pair(strs[i].size(), s[i][strs.size()])]++;
+  }
+  for (int L = 0; L < n; L++) {
+    for (int lenr = strs[L].size() % 2; lenr <= strs[L].size(); lenr++) {
+      int l = strs[L].size() + lenr;
+      int suml = s[L][l / 2], sumr = s[L][strs[L].size()] - s[L][l / 2];
+      if (suml > sumr)
+        ans += cnt[lenr][suml - sumr];
     }
-    f[str.size()][sum[i][str.size()]]++;
+  }
+  for (int L = 0; L < n; L++) {
+    for (int lenr = strs[R].size() % 2; lenr < strs[L].size(); lenr++) {
+      int l = strs[L].size() + lenr;
+      int suml = s[L][l / 2], sumr = s[L][strs[L].size()] - s[L][l / 2];
+      if (suml > sumr)
+        ans += cnt[lenr][suml - sumr];
+    }
   }
 
-  for (int i = 0; i < n; i++) {
-    string &str = strs[i];
-    for (int j = 0; j <= str.size(); j++) {
-      int lenl = j, lenr = str.size() - j;
-      int len = abs(lenl - lenr);
-      int suml = sum[i][lenl], sumr = sum[i][str.size()] - sum[i][lenl];
-      ans += f[len][abs(suml - sumr)];
-    }
-  }
+  cout << ans;
 
   return 0;
 }
