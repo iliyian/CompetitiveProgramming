@@ -1,3 +1,7 @@
+// date: 2023/12/24 15:47:11
+// tag: 二分不如直接找最值更优
+// 最值最优！！！
+
 #include <bits/stdc++.h>
 #define N 200005
 #define int long long
@@ -6,40 +10,34 @@ using namespace std;
 void solve() {
   int n;
   cin >> n;
-  vector<int> l(n), r(n), c(n);
-  set<int> sr;
-  for (int i = 0; i < n; i++)
-    cin >> l[i];
-  for (int i = 0; i < n; i++)
-    cin >> r[i], sr.insert(r[i]);
+  vector<pair<int, int>> a;
+  for (int i = 0; i < n; i++) {
+    int l; cin >> l;
+    a.push_back({l, 1});
+  }
+  for (int i = 0; i < n; i++) {
+    int r; cin >> r;
+    a.push_back({r, -1});
+  }
+  sort(a.begin(), a.end());
+  vector<int> d, st;
+  for (auto [x, t] : a) {
+    if (t == 1) {
+      st.push_back(x);
+    } else {
+      d.push_back(x - st.back());
+      st.pop_back();
+    }
+  }
+  vector<int> c(n);
   for (int i = 0; i < n; i++)
     cin >> c[i];
-  sort(l.begin(), l.end());
-  sort(r.begin(), r.end());
-
-  vector<int> d(n), id(n);
-
-  // int t = upper_bound(r.begin(), r.end(), l.back()) - r.begin();
-  // reverse(r.begin() + t, r.end());
-
-  for (int i = n - 1; i >= 0; i--) {
-    auto t = sr.upper_bound(l[i]);
-    d[i] = *t - l[i];
-    sr.erase(t);
-  }
-
-  sort(c.begin(), c.end());
-
-  for (int i = 0; i < n; i++)
-    d[i] = r[i] - l[i];
-  iota(id.begin(), id.end(), 0);
-  sort(id.begin(), id.end(), [&](const int &x, const int &y) {
-    return d[x] > d[y];
-  });
+  sort(c.begin(), c.end(), greater<int>());
+  sort(d.begin(), d.end());
 
   int ans = 0;
   for (int i = 0; i < n; i++)
-    ans += d[id[i]] * c[i];
+    ans += d[i] * c[i];
   cout << ans << '\n';
 }
 
