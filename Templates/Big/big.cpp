@@ -118,8 +118,8 @@ Big divmod(Big &a, const Big &b) {
   Big ans;
   for (int t = a.size() - b.size(); a >= b; t--) {
     Big d;
-    d.assign(t + 1, 0);
-    d.front() = 1;
+    d.assign(t + 1, 0); // 这不适用于压位高精度，考虑[1,0]和[2]
+    d.front() = 1; // ?
     Big c = b * d;
     while (a >= c) {
       a -= c;
