@@ -7,6 +7,7 @@ int a[N], b[N];
 int main() {
   ios::sync_with_stdio(false); cin.tie(0);
   freopen("D1.in", "r", stdin);
+  freopen("D1.out", "w", stdout);
   int _; cin >> _;
   while (_--) {
     int n;

@@ -1,8 +1,9 @@
 // date: 2024/02/08 12:56:26
 // tag: lambda函数也可以递归
+// tmd，因为这个和1927B，都tmd是2e5，我写成1e5两个都t了好久好久啊艹艹艹
 
 #include <bits/stdc++.h>
-#define N 100005
+#define N 200005
 using namespace std;
 
 struct Edge {
