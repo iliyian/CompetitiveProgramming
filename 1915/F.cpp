@@ -1,55 +1,47 @@
+// date: 2024/02/17 13:28:58
+// tag: pb_ds比离散化然后树状数组简单的多了，
+// 平衡树模板，但是平衡树都不用写了...
+// 注意其不支持重复值，如果要，可以用pair<T, int>，后者为时间
+
 #include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+#define int long long
 using namespace std;
+using namespace __gnu_pbds;
 
 void solve() {
   int n;
   cin >> n;
-  vector<pair<int, int>> a(n);
-  vector<int> v;
-  for (int i = 0; i < n; i++) {
-    int x, y;
-    cin >> x >> y;
-    a[i] = {x, y};
-    v.push_back(x), v.push_back(y);
+  vector<pair<int, int>> vec;
+  for (int i = 1; i <= n; i++) {
+    int l, r;
+    cin >> l >> r;
+    vec.push_back({r, l});
   }
-  sort(v.begin(), v.end());
-  int len = unique(v.begin(), v.end()) - v.begin();
-  auto get = [&](const int x) {
-    return lower_bound(v.begin(), v.end(), x) - v.begin();
-  };
-
+  tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> s;
+  sort(vec.begin(), vec.end());
   int ans = 0;
-  for (int i = 0; i < n; i++)
-    for (int j = i + 1; j < n; j++)
-      if (a[i].first > a[j].first && a[i].second < a[j].second
-        ||
-        a[i].first < a[j].first && a[i].second > a[j].second) {
-        ans++;
-      }
+  for (auto [r, l] : vec) {
+    ans += s.size() - s.order_of_key(l);
+    s.insert(l);
+  }
   cout << ans << '\n';
-
-  // vector<int> id(n);
-  // iota(id.begin(), id.end(), 0);
-  // sort(id.begin(), id.end(), [&](const int &x, const int &y) {
-  //   return get(a[x].first) < get(a[y].first);
-  // });
-  // // for (int i = 0; i < n; i++)
-  // //   cout << a[id[i]].second << " \n"[i == n - 1];
-  // set<int> s;
-  // int ans = 0;
-  // for (int i = 0; i < n; i++) {
-  //   int idx = get(a[id[i]].second);
-  //   s.insert(idx);
-  //   auto ord = s.lower_bound(idx);
-  //   s.be
-  // }
-  // cout << ans << '\n';
 }
 
-int main() {
-  ios::sync_with_stdio(false); cin.tie(0);
+signed main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   freopen("F.in", "r", stdin);
   freopen("F.out", "w", stdout);
-  int _; cin >> _;
-  while (_--) solve();
+
+  int t;
+  cin >> t;
+
+  while (t--) {
+    solve();
+  }
+
+  return 0;
 }
