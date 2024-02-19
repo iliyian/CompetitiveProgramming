@@ -7,10 +7,20 @@ void solve() {
   cin >> n;
   string str;
   cin >> str;
+  str = '#' + str;
   int ans = 0;
   for (int l = 1; l <= n; l++) {
-    
+    int last1 = -3, sum = 0;
+    for (int i = l; i <= n; i++) {
+      if (str[i] == '1' && last1 < i - 2) {
+        last1 = i;
+        sum++;
+        // ans++;
+      }
+      ans += sum;
+    }
   }
+  cout << ans << '\n';
 }
 
 signed main() {
