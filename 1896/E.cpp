@@ -14,16 +14,15 @@ void solve() {
   }
   vector<int> h(n * 2 + 1);
   for (int i = 1; i <= n; i++) {
-    // h[i] = (a[i] - i + n) % n;
-    if (a[i] >= i) {
-      h[i] = a[i] - i;
-    } else {
-      h[i] = a[i] + n - i;
-    }
+    h[i] = (a[i] - i + n) % n;
+    // if (a[i] >= i) {
+    //   h[i] = a[i] - i;
+    // } else {
+    //   h[i] = a[i] + n - i;
+    // }
   }
 
-  
-  vector<int> d((n * 2 + 1) << 2);
+  vector<int> d((n * 2 + 5) << 2);
 
   auto pushup = [&](int p) {
     d[p] = d[lc] + d[rc];
