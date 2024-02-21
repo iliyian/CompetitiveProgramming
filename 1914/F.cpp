@@ -25,11 +25,13 @@ void solve() {
   auto dfs2 = [&](auto self, int x) -> int {
     if (siz[son[x]] * 2 > siz[x] - 1) {
       int v = self(self, son[x]);
+      // contradictory
       return v + min((siz[x] - 1 - v * 2) / 2, siz[x] - 1 - siz[son[x]]);
     } else {
       return (siz[x] - 1) / 2;
     }
   };
+  cout << dfs2(dfs2, 1) << '\n';
 }
 
 signed main() {
