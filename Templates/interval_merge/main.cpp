@@ -1,3 +1,6 @@
+// 2024/2/17 有点看不懂，但好像AC了？
+// 有更简单的写法吗？
+
 #include <bits/stdc++.h>
 #define int long long
 #define inf 0x3f3f3f3f3f3f3f3f
