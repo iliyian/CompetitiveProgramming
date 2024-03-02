@@ -1,51 +1,50 @@
+// date: 2024-03-02 22:08:58
+// tag: bfs
+// 后面修改那段才是精髓
+// 顺便bfs竟然还可以这样写也是nb
+
 #include <bits/stdc++.h>
 #define int long long
 using namespace std;
 
-struct Node {
-  int x, y, realx, realy, t;
-};
-
-int dx[] = {-1, 0, 1, 0}, dy[] = {0, 1, 0, -1};
-
 void solve() {
   int n, m;
   cin >> n >> m;
-  vector<vector<int>> a(n + 1, vector<int>(m + 1));
-  vector<vector<bool>> vis(n + 1, vector<bool>(m + 1));
-  for (int i = 0; i < n; i++) {
+  vector<vector<int>> a(n, vector<int>(m));
+  vector dis(n, vector<int>(m, -1));
+  for (int  i = 0; i < n; i++) {
     for (int j = 0; j < m; j++) {
       cin >> a[i][j];
     }
   }
-  queue<Node> q;
-  q.push({0, 0, 0, 0, 0});
+  queue<pair<int, int>> q;
+  q.push({0, 0});
+  dis[0][0] = 0;
   while (!q.empty()) {
-    Node node = q.front(); q.pop();
-    int x = node.x, y = node.y, t = node.t;
-    int rx = node.realx, ry = node.realy;
-    if (rx == n - 1 && ry == m - 1) {
-      cout << t << '\n';
-      return;
+    auto [x, y] = q.front(); q.pop();
+    if (a[(x + 1) % n][y] == 0 && a[(x + 2) % n][y] == 0 && dis[(x + 2) % n][y] == -1) {
+      dis[(x + 2) % n][y] = dis[x][y] + 1;
+      q.push({(x + 2) % n, y});
     }
-    if (vis[x][y]) continue;
-    vis[x][y] = true;
-    int x1 = (x + 1) % n, x2 = (x + 2) % n;
-    if (!a[x1][y] && !a[x2][y]) {
-      q.push({x2, y, x1, y, t + 1});
-    }
-    if (!a[x1][y]) {
-      q.push({(x - 1 + n) % n, y, x, y, t + 1});
-    }
-    int y1 = y + 1, y2 = y - 1;
-    if (y1 >= 0 && y1 < m && !a[x1][y1]) {
-      q.push({x1, y1, x, y1, t + 1});
-    }
-    if (y2 >= 0 && y2 < m && !a[x1][y2]) {
-      q.push({x1, y2, x, y2, t + 1});
+    if (a[(x + 1) % n][(y + 1) % m] == 0 && dis[(x + 1) % n][(y + 1) % m] == -1) {
+      dis[(x + 1) % n][(y + 1) % m] = dis[x][y] + 1;
+      q.push({(x + 1) % n, (y + 1) % m});
     }
   }
-  cout << -1 << '\n';
+  // int ans = dis[n - 1][m - 1];
+  int ans = 0x3f3f3f3f;
+  for (int i = 0; i < n; i++) {
+    int d = dis[i][m - 1];
+    if (d != -1) {
+      // upwards to the target
+      if (d % n != (i + 1) % n) {
+        ans = min(ans, d + (i + 1 - d % n + n) % n);
+      } else {
+        ans = min(ans, d);
+      }
+    }
+  }
+  cout << (ans == 0x3f3f3f3f ? -1 : ans) << '\n';
 }
 
 signed main() {
