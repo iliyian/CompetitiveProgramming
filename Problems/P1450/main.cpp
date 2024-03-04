@@ -1,3 +1,6 @@
+// date: 2024-02-27 19:02:50
+// tag: 状态压缩动态规划，完全背包，容斥
+
 #include <bits/stdc++.h>
 #define int long long
 using namespace std;
