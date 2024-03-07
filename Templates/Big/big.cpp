@@ -14,6 +14,10 @@ struct Big:vector<long long> {
     push_back(num);
     check();
   }
+  Big(int n, int x) {
+    clear();
+    assign(n, x);
+  }
   Big& check() {
     if (empty()) return *this;
     while (!back() && size() >= 2) pop_back();
@@ -127,6 +131,22 @@ Big divmod(Big &a, const Big &b) {
     }
   }
   return ans;
+}
+
+Big operator / (const Big &a, int b) {
+  Big c(a.size());
+  int down = 0;
+  for (int i = a.size(); i >= 0; i--) {
+    int t = a[i] + down * BASE;
+    c[i] = t / b;
+    down = t - c[i] * b;
+  }
+  while (c.size() >= 2 && !c.back()) c.pop_back();
+  return c;
+}
+
+void operator /= (Big &a, int x) {
+  a = a / x;
 }
 
 Big operator / (Big a, const Big &b) {
