@@ -45,6 +45,7 @@ signed main() {
     }
     swap(a[t], a[r]);
 
+    // 系数化1便于回代
     for (int j = r + 1; j <= n + 1; j++) {
       a[r][j] /= a[r][i];
     }
@@ -54,6 +55,7 @@ signed main() {
         continue;
       }
       double t = a[j][i];
+      // 注意是r，回代连着的一系列项
       for (int k = r; k <= n + 1; k++) {
         a[j][k] -= t * a[r][k];
       }
@@ -64,6 +66,7 @@ signed main() {
 
   for (int i = n; i >= 1; i--) {
     for (int j = i - 1; j >= 1; j--) {
+      // 只考虑最后的值
       a[j][n + 1] -= a[j][i] * a[i][n + 1];
     }
   }
