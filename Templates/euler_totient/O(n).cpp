@@ -21,13 +21,13 @@ signed main() {
       phi[i] = i - 1;
     }
     for (int p : pri) {
-      if (p * i > 40000) break;
+      if (i * p > 40000) break;
       vis[i * p] = true;
       if (i % p == 0) {
-        phi[i * p] = p * phi[i];
+        phi[i * p] = phi[i] * p;
         break;
       }
-      phi[i * p] = phi[p] * phi[i];
+      phi[i * p] = phi[i] * phi[p];
     }
   }
 
