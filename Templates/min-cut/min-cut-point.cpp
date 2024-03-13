@@ -1,3 +1,7 @@
+// date: 2024-03-10 22:14:43
+// tag: 最小割点，
+// re#01: g初始化在输入n之前，s的出点而非入点为真正的s
+
 #include <bits/stdc++.h>
 #define int long long
 #define inf 0x3f3f3f3f3f3f3f3f
@@ -14,35 +18,29 @@ signed main() {
   freopen("main.in", "r", stdin);
   freopen("main.out", "w", stdout);
 
-  int n, m;
-  cin >> n >> m;
-  vector<vector<Edge>> g(n + 2);
+  int n, m, s, t;
+  cin >> n >> m >> s >> t;
+  vector<vector<Edge>> g(n * 2 + 1);
   auto add = [&](int u, int v, int cap) {
     g[u].push_back({v, cap, signed(g[v].size())});
     g[v].push_back({u, 0, signed(g[u].size() - 1)});
   };
-  int s = 0, t = n + 1;
-  vector<int> dep(n + 2), cur(n + 2);
   for (int i = 1; i <= n; i++) {
-    int x;
-    cin >> x;
-    if (x) {
-      add(s, i, 1);
-    } else {
-      add(i, t, 1);
-    }
+    add(i, i + n, 1);
   }
   for (int i = 1; i <= m; i++) {
     int u, v;
     cin >> u >> v;
-    add(u, v, 1);
-    add(v, u, 1);
+    add(u + n, v, inf);
+    add(v + n, u, inf);
   }
+
+  vector<int> cur(n * 2 + 1), d(n * 2 + 1), dep(n * 2 + 1);
   auto bfs = [&]() {
+    fill(cur.begin(), cur.end(), 0);
+    fill(dep.begin(), dep.end(), 0);
     queue<int> q;
     q.push(s);
-    fill(dep.begin(), dep.end(), 0);
-    fill(cur.begin(), cur.end(), 0);
     dep[s] = 1;
     while (!q.empty()) {
       int u = q.front(); q.pop();
@@ -75,14 +73,15 @@ signed main() {
     }
     return 0;
   };
-  int ans = 0;
+
+  int res = 0;
   while (bfs()) {
     int r = 0;
-    while (r = dfs(dfs, s, inf)) {
-      ans += r;
+    while (r = dfs(dfs, s + n, inf)) {
+      res += r;
     }
   }
-  cout << ans << '\n';
+  cout << res << '\n';
 
   return 0;
 }
