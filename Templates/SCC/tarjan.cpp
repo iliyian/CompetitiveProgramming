@@ -14,10 +14,10 @@ void tarjan1(int u) {
   for (auto v : g[u]) {
     if (!dfn[v]) {
       tarjan1(v);
-      low[u] = min(low[u], dfn[u]);
+      low[u] = min(low[u], low[v]);
     } else if (ins[v]) {
       // greedy
-      low[u] = min(low[u], low[v]);
+      low[u] = min(low[u], dfn[v]);
     }
   }
   if (low[u] == dfn[u]) {
@@ -57,9 +57,9 @@ void tarjan2(int u) {
     if (!dfn[v]) {
       tarjan2(v);
       // greedy
-      low[u] = min(low[u], dfn[v]);
-    } else if (!sccno[v]) { // ?
       low[u] = min(low[u], low[v]);
+    } else if (!sccno[v]) { // ?
+      low[u] = min(low[u], dfn[v]);
     }
   }
   if (dfn[u] == low[u]) {

@@ -118,7 +118,7 @@ ostream& operator << (ostream &os, const Big &b) {
 }
 
 Big gcd(Big &a, Big &b, Big &p) {
-  if (b == 0) return a;
+  if (b == 0) return a * p;
   while (!a.mod2() && !b.mod2()) {
     a.div2();
     b.div2();
@@ -146,7 +146,7 @@ signed main() {
   cin >> a >> b;
 
   Big g = gcd(a, b, c);
-  cout << g * c << '\n';
+  cout << g << '\n';
 
   return 0;
 }

@@ -1,4 +1,4 @@
-#include <bits/stdc++.h> //C(n,m)%p n,m��С,p�� ����������
+#include <bits/stdc++.h> //C(n,m)%p n,m??��,p?? ??????????
 // test:https://codeforces.com/contest/896/submission/227968276
 using namespace std;
 using ll = long long;
@@ -12,7 +12,7 @@ struct disolve1e18 {
         (res += a) %= m;
     return res;
   }
-  ll f(ll x, ll n) { return (mul(x, x, n) + delt) % n; } // �����������
+  ll f(ll x, ll n) { return (mul(x, x, n) + delt) % n; } // ???????????
   ll _gcd(ll a, ll b) {
     if (a < b)
       swap(a, b);
@@ -48,7 +48,7 @@ struct disolve1e18 {
     }
     return 1;
   }
-  int find_factorplus(ll n) { // ��floyd��Ȧ���㷨
+  int find_factorplus(ll n) { // ??floyd???????
     for (ll a = 2, b = f(a, n); a != b; a = f(a, n), b = f(f(b, n), n)) {
       ll p = _gcd(abs(b - a), n);
       if (p > 1)
@@ -85,7 +85,7 @@ struct disolve1e18 {
     return facs;
   }
 } mil;
-struct BruteC { // C(n,m)%p n,m 1e5,p 1e9 ���������� precalǰ׺�ͷ�Χn,m/ģ��p
+struct BruteC { // C(n,m)%p n,m 1e5,p 1e9 ?????????? precal?????��n,m/???p
                 // //O(n*prid(p))
   ll mod, phi;
   int siz;

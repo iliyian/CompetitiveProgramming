@@ -1,5 +1,5 @@
 // date: 2024/02/17 14:59:57
-// tag: pb_ds 普通平衡树
+// tag: pb_ds 普通平衡树，注意有相同值需要如下特殊处理
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
