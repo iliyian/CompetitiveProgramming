@@ -41,6 +41,29 @@ struct Big:vector<long long> {
     }
     return (*this);
   }
+  bool mod2() {
+    return (*this)[0] % 2;
+  }
+  void div2() {
+    for (int i = size() - 1; i > 0; i--) {
+      if ((*this)[i] % 2) {
+        (*this)[i - 1] += BASE;
+        (*this)[i]--;
+      }
+      (*this)[i] /= 2;
+    }
+    (*this)[0] /= 2;
+    while (size() >= 2 && !back()) pop_back();
+  }
+  bool operator != (const Big &b) {
+    return ((*this) < b) || (b < (*this));
+  }
+  bool operator != (int x) {
+    return (*this) != Big(x);
+  }
+  bool operator == (int x) {
+    return !((*this) != x);
+  }
 };
 
 istream& operator >> (istream &is, Big &x) {
@@ -176,6 +199,25 @@ Big pow(Big a, Big b) {
     b /= Big(2);
   }
   return res;
+}
+
+// p初始化为1，从隔壁copy过来的，不确定能不能用
+Big gcd(Big &a, Big &b, Big &p) {
+  if (b == 0) return a * p;
+  while (!a.mod2() && !b.mod2()) {
+    a.div2();
+    b.div2();
+    p = p * 2;
+  }
+  while (!a.mod2()) {
+    a.div2();
+  }
+  while (!b.mod2()) {
+    b.div2();
+  }
+  if (a < b) swap(a, b);
+  a -= b;
+  return gcd(b, a, p);
 }
 
 int main() {
