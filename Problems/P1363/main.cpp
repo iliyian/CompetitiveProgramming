@@ -1,64 +1,62 @@
+// date: 2024-03-15 13:46:13
+// tag: 一类带模的bfs
+
 #include <bits/stdc++.h>
+#define int long long
 using namespace std;
 
-char a[1500][1500];
-
-struct Color {
-  bool vis;
-  int x, y;
-  Color() {
-    x = -1, y = -1, vis = false;
-  }
-  Color(int x, int y, bool vis) {
-    this->x = x, this->y = y, this->vis = vis;
-  }
-} color[1500][1500];
+int n, m;
 
 struct Node {
-  int x, y, rx, ry;
+  int x, y, mx, my;
 };
 
-int dx[] = {-1, 0, 1, 0}, dy[] = {0, 1, 0, -1}, n, m;
+int dx[] = {-1, 0, 1, 0}, dy[] = {0, 1, 0, -1};
 
 void solve() {
-  int sx, sy;
-  for (int i = 0; i < n; i++)
-    for (int j = 0; j < m; j++)
-      color[i][j] = Color();
-
-  for (int i = 0; i < n; i++)
+  vector<string> a(n);
+  int sx = 0, sy = 0;
+  for (int i = 0; i < n; i++) {
+    cin >> a[i];
     for (int j = 0; j < m; j++) {
-      cin >> a[i][j];
-      if (a[i][j] == 'S')
+      if (a[i][j] == 'S') {
         sx = i, sy = j;
+      }
     }
-    
+  }
   queue<Node> q;
   q.push({sx, sy, sx, sy});
-
+  vector<vector<bool>> vis(n, vector<bool>(m));
+  vector<vector<array<int, 2>>> prv(n, vector<array<int, 2>>(m));
   while (!q.empty()) {
-    Node node = q.front(); q.pop();
-    int x = node.x, y = node.y, rx = node.rx, ry = node.ry;
-    auto &c = color[x][y];
-    if (c.vis && (c.x != rx || c.y != ry)) {
-      cout << "Yes\n";
-      return;
-    }
-    if (c.vis && c.x == rx && c.y == ry) continue;
-    c = Color(rx, ry, true);
-
+    auto [x, y, mx, my] = q.front(); q.pop();
+    if (vis[mx][my]) continue;
+    vis[mx][my] = true;
+    prv[mx][my] = {x, y};
     for (int i = 0; i < 4; i++) {
-      int xx = (x + dx[i] + n) % n, yy = (y + dy[i] + m) % m;
-      if (a[xx][yy] == '#') continue;
-      q.push({xx, yy, rx + dx[i], ry + dy[i]});
+      int xx = x + dx[i], yy = y + dy[i];
+      int mxx = (xx % n + n) % n, myy = (yy % m + m) % m;
+      if (a[mxx][myy] == '#') continue;
+      if (vis[mxx][myy] && (prv[mxx][myy][0] != xx || prv[mxx][myy][1] != yy)) {
+        cout << "Yes\n";
+        return;
+      }
+      q.push({xx, yy, mxx, myy});
     }
   }
   cout << "No\n";
 }
 
-int main() {
-  ios::sync_with_stdio(false); cin.tie(0);
+signed main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   freopen("data.in", "r", stdin);
-  while (cin >> n >> m) solve();
+  freopen("data.out", "w", stdout);
+
+  while (cin >> n >> m) {
+    solve();
+  }
+
   return 0;
 }
