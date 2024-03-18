@@ -1,3 +1,6 @@
+// date: 2024-03-08 12:41:17
+// tag: 高斯消元
+
 #include <bits/stdc++.h>
 #define eps 1e-10
 using namespace std;
