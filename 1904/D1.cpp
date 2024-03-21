@@ -1,40 +1,57 @@
+// date: 2024-03-05 20:49:19
+// tag: 关键在于反向思维找到扩散的条件
+
 #include <bits/stdc++.h>
-#define N 1005
+#define int long long
 using namespace std;
 
-int a[N], b[N];
-
-int main() {
-  ios::sync_with_stdio(false); cin.tie(0);
-  freopen("D1.in", "r", stdin);
-  freopen("D1.out", "w", stdout);
-  int _; cin >> _;
-  while (_--) {
-    int n;
-    cin >> n;
-    for (int i = 0; i < n; i++)
-      cin >> a[i];
-    for (int i = 0; i < n; i++)
-      cin >> b[i];
-    map<int, set<int>> m;
-    for (int i = 0; i < n; i++) {
-      for (int j = 0;; j++) {
-        int p = i + j;
-        if (p >= n || a[p] > a[i]) break;
-        m[p].insert(a[i]);
-      }
-      for (int j = 0;; j++) {
-        int p = i - j;
-        if (p < 0 || a[p] > a[i]) break;
-        m[p].insert(a[i]);
+void solve() {
+  int n;
+  cin >> n;
+  vector<int> a(n + 1), b(n + 1);
+  for (int i = 1; i <= n; i++) {
+    cin >> a[i];
+  }
+  for (int i = 1; i <= n; i++) {
+    cin >> b[i];
+  }
+  set<pair<int, int>> s;
+  for (int i = 1; i <= n; i++) {
+    for (int j = i - 1; j >= 1; j--) {
+      if (a[j] < a[i] && a[i] <= b[j]) {
+        s.insert({j, a[i]});
+      } else break;
+    }
+    for (int j = i + 1; j <= n; j++) {
+      if (a[j] < a[i] && a[i] <= b[j]) {
+        s.insert({j, a[i]});
+      } else break;
+    }
+  }
+  for (int i = 1; i <= n; i++) {
+    if (a[i] != b[i]) {
+      if (!s.count({i, b[i]})) {
+        cout << "NO\n";
+        return;
       }
     }
-    bool f = true;
-    for (int i = 0; i < n; i++)
-      if (!m[i].count(b[i])) {
-        f = false;
-        break;
-      }
-    cout << (f ? "YES" : "NO") << '\n';
   }
+  cout << "YES\n";
+}
+
+signed main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
+  freopen("D1.in", "r", stdin);
+  freopen("D1.out", "w", stdout);
+
+  int _;
+  cin >> _;
+
+  while (_--) {
+    solve();
+  }
+
+  return 0;
 }
