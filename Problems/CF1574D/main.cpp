@@ -39,9 +39,11 @@ int hashp(const array<int, 11> &s, int p) {
   return h;
 }
 
-int hash0(const array<int, 11> &s) {
-  return hashp(s, mod1) * mod2 + hashp(s, mod2);
-}
+// int hash0(const array<int, 11> &s) {
+//   return hashp(s, mod1) * mod2 + hashp(s, mod2);
+// }
+
+std::hash<array<int, 11>> hash0;
 
 signed main() {
   ios::sync_with_stdio(false);
