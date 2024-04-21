@@ -6,20 +6,20 @@
 using namespace std;
 
 string str;
-int s[5005][5005];
 
 void solve() {
   cin >> str;
+  vector<vector<int>> f(str.size() + 1, vector<int>(str.size() + 1));
   for (int i = 0; i < str.size(); i++) {
     for (int j = i + 1; j < str.size(); j++) {
-      s[i][j] = (str[i] - str[j]) * (str[i] - str[j])
+      f[i][j] = (str[i] - str[j]) * (str[i] - str[j])
         * (str[i] != '?') * (str[j] != '?');
     }
   }
-  for (int len = str.size() / 2; len >= 1; len--) {
-    
-    for (int l = 0; l + len * 2 - 1 < str.size(); l++) {
-      f[l]  
+  vector<vector<int>> s(str.size() + 1, vector<int>(str.size() + 1));
+  for (int len = 1; len < str.size(); len++) {
+    for (int i = 1; i + len - 1 < str.size(); i++) {
+      s[len][i] = s[len][i - 1] + f[i][i + len - 1];
     }
   }
   cout << 0 << '\n';
