@@ -1,3 +1,6 @@
+// date: 2024-04-25 12:55:21
+// tag: 构造，暴力
+
 #include <bits/stdc++.h>
 #define int long long
 #define N 500
@@ -6,35 +9,37 @@ using namespace std;
 void solve() {
   int n;
   cin >> n;
-  vector<int> a(n + 1);
-  for (int i = 1; i <= n; i++) {
+  vector<int> a(n);
+  for (int i = 0; i < n; i++) {
     cin >> a[i];
   }
-  map<int, int> prv;
-  vector<int> nxt(n + 1);
-  for (int i = 1; i <= n; i++) {
-    if (!prv[a[i]]) {
-      prv[a[i]] = i;
-    } else {
-      nxt[prv[a[i]]] = i;
-      prv[a[i]] = 0;
-    }
-  }
-  bitset<N + 1> rm;
   vector<pair<int, int>> add;
-  int pre = 0, rmcnt = 0;
   vector<int> ans;
-  for (int i = 1; i <= n; i++) {
-    if (prv[a[i]]) {
+  int pre = 0;
+  while (!a.empty()) {
+    bool f = false;
+    for (auto it = a.begin() + 1; it != a.end(); it++) {
+      if (*it == a.front()) {
+        f = true;
+        int len = 1;
+        for (auto it2 = a.begin() + 1; it2 != it; it2++) {
+          add.push_back({it - a.begin() + it2 - a.begin() + pre, *it2});
+          len++;
+        }
+        reverse(a.begin() + 1, it);
+        a.erase(it);
+        a.erase(a.begin());
+        ans.push_back(len * 2);
+        pre += len * 2;
+        break;
+      }
+    }
+    if (!f) {
       cout << -1 << '\n';
-      cout << '\n';
       return;
     }
-    if (!nxt[i]) continue;
-    for (int j = i + 1; j < nxt[i]; j++) {
-      a[]
-    }
   }
+
   cout << add.size() << '\n';
   for (auto [k, v] : add) {
     cout << k << ' ' << v << '\n';
@@ -43,7 +48,7 @@ void solve() {
   for (auto i : ans) {
     cout << i << ' ';
   }
-  cout << "\n\n";
+  cout << "\n";
 }
 
 signed main() {
