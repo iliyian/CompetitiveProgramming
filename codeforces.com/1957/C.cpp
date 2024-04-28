@@ -1,3 +1,6 @@
+// date: 2024-04-23 22:13:21
+// tag: dp，数学
+
 #include <bits/stdc++.h>
 #define int long long
 #define N 300000
