@@ -1,5 +1,4 @@
 {
-    "cmake.configureOnOpen": true,
     "files.autoSave": "onFocusChange",
     "python.REPL.enableREPLSmartSend": false
 }
