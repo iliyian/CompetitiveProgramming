@@ -22,15 +22,17 @@ signed main() {
   };
   dfs(dfs, 0, 0);
   sort(nums.begin(), nums.end());
-  int li = lower_bound(nums.begin(), nums.end(), l) - nums.begin(),
-    ri = upper_bound(nums.begin(), nums.end(), r) - nums.begin() - 1;
-  set<int> ans;
-  for (int i = li; i <= ri; i++) {
-    ans.insert(nums[i]);
-    for (int j = 1; j * nums[i] <= r; j++) {
-      ans.insert(j * nums[i]);
+  vector<int> ans;
+  for (int i = l; i <= r; i++) {
+    for (int j : nums) {
+      if (j > i) break;
+      if (i % j == 0) {
+        ans.push_back(i);
+        break;
+      }
     }
   }
+  
   for (auto i : ans) {
     cout << i << ' ';
   }
