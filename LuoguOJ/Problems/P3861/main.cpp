@@ -1,27 +1,49 @@
+// date: 2024-05-28 22:14:03
+// tag: dp
+
 #include <bits/stdc++.h>
 #define int long long
+#define N ((int)1e6)
 using namespace std;
 
 void solve() {
   int n;
   cin >> n;
   vector<int> a = {-1};
-  for (int i = 1; i <= n; i++) {
+  for (int i = 1; i * i <= n; i++) {
     if (n % i == 0) {
       a.push_back(i);
-    }
-  }
-  vector<vector<int>> dp(a.size() + 1, vector<int>(a.size() + 1));
-  dp[1][1] = 1;
-  for (int i = 2; i < a.size(); i++) {
-    for (int j = 2; j <= i; j++) {
-      dp[i][j] = dp[i][j - 1] + (i == j);
-      if (a[i] % a[j] == 0) {
-        dp[i][j] += dp[a[i] / a[j]][j] - 1;
+      if (i * i != n) {
+        a.push_back(n / i);
       }
     }
   }
-  cout << dp[a.size()][a.size()] - 1 << '\n';
+  sort(a.begin(), a.end());
+  vector<int> id1(N + 1), id2(N + 1);
+
+  int s = sqrt(n);
+  for (int i = 1; i < a.size(); i++) {
+    int v = a[i];
+    if (v <= s) {
+      id1[v] = i;
+    } else {
+      id2[n / v] = i;
+    }
+  }
+
+  vector<vector<int>> dp(a.size(), vector<int>(a.size()));
+  for (int i = 1; i < a.size(); i++) {
+    dp[i][i] = 1;
+    for (int j = 1; j < a.size(); j++) {
+      dp[i][j] += dp[i][j - 1];
+      if (i <= j) continue;
+      if (a[i] % a[j] == 0) {
+        int v = a[i] / a[j];
+        dp[i][j] += dp[v <= s ? id1[v] : id2[n / v]][j - 1];
+      }
+    }
+  }
+  cout << dp.back().back() - 1 << '\n';
 }
 
 signed main() {

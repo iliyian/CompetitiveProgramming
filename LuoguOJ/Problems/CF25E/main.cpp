@@ -1,37 +1,63 @@
+// date: 2024-05-28 21:38:04
+// tag: 枚举，字符串，kmp
+
 #include <bits/stdc++.h>
 #define int long long
 using namespace std;
 
-void solve() {
-  auto pf = [](const string &str) {
-    int n = str.size();
-    vector<int> pi(n);
-    for (int i = 1; i < n; i++) {
-      int j = pi[i - 1];
-      while (j > 0 && str[j] != str[i]) j = pi[j - 1];
-      if (str[j] == str[i]) j++;
-      pi[i] = j;
-    }
-    return pi;
-  };
-  vector<string> strs(3);
-  for (int i = 0; i < 3; i++) {
-    cin >> strs[i];
+vector<int> prefix_function(const string &s) {
+  vector<int> pi(s.size());
+  for (int i = 1; i < s.size(); i++) {
+    int j = pi[i - 1];
+    while (j > 0 && s[i] != s[j]) j = pi[j - 1];
+    if (s[i] == s[j]) j++;
+    pi[i] = j;
   }
+  return pi;
+}
+
+int calc(const string &a, const string &b) {
+  vector<int> pi = prefix_function(a + '#' + b);
+  int lap = pi.back();
+  for (int i : pi) {
+    if (i == a.size()) {
+      lap = i;
+      break;
+    }
+  }
+  return lap;
+}
+
+void solve() {
+  vector<string> str(3);
+  int tot = 0;
+  for (int i = 0; i < 3; i++) {
+    cin >> str[i];
+    tot += str[i].size();
+  }
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++) {
+      if (i != j && calc(str[i], str[j]) == str[i].size()) {
+        int k;
+        for (k = 0; k < 3; k++) {
+          if (k != i && k != j) {
+            break;
+          }
+        }
+        cout << tot - str[i].size() - max(calc(str[j], str[k]), calc(str[k], str[j]));
+        return;
+      }
+    }
+  }
+
   vector<int> id(3);
   iota(id.begin(), id.end(), 0);
   int ans = 0x3f3f3f3f;
   do {
-    int sum = strs[id[0]].size() + strs[id[1]].size() + strs[id[2]].size();
+    int sum = tot;
     for (int i = 1; i < 3; i++) {
-      string cur = strs[id[i - 1]] + '#' + strs[id[i]];
-      vector<int> pi = pf(cur);
-      for (int j = strs[id[i - 1]].size() + 1; j < cur.size(); j++) {
-        if (pi[j] == strs[id[i - 1]].size()) {
-          sum -= j - 2 * strs[id[i - 1]].size();
-          break;
-        }
-      }
+      int lap = calc(str[id[i]], str[id[i - 1]]);
+      sum -= lap;
     }
     ans = min(ans, sum);
   } while (next_permutation(id.begin(), id.end()));
