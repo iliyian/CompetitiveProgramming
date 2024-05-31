@@ -6,7 +6,7 @@ using namespace std;
 int a[N * 4], b[N * 4], d[N * 4];
 
 void pushup(int p) {
-  d[p] = d[p << 1 | 1] + d[p << 1 | 1];
+  d[p] = d[p << 1] + d[p << 1 | 1];
 }
 
 void build(int s, int t, int p) {
