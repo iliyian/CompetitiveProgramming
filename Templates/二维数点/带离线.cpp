@@ -42,7 +42,7 @@ signed main() {
   vector<array<int, 3>> a;
   for (int i = 3; i <= N; i++) {
     for (int j = 0; j < fac[i].size(); j++) {
-      // must bad only
+      // bad only
       a.push_back({fac[i][j], i, max(0ll, signed(fac[i].size()) - j - 2)});
     }
   }
