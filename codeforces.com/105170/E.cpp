@@ -1,5 +1,8 @@
 // date: 2024-05-20 21:19:50
 // tag: 单调栈，连通性
+// tmd，要在x[i]的基础上还比较y[i]啊，艹，我调了几天啊，几星期了吧
+
+// date: 2024-06-01 22:40:18
 
 #include <bits/stdc++.h>
 #define int long long
@@ -21,6 +24,9 @@ signed main() {
     id[i] = i;
   }
   sort(id.begin() + 1, id.end(), [&](const int &_x, const int &_y) {
+    if (x[_x] == x[_y]) {
+      return y[_x] < y[_y];
+    }
     return x[_x] < x[_y];
   });
 

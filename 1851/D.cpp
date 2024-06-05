@@ -6,39 +6,46 @@ void solve() {
   int n;
   cin >> n;
   vector<int> s(n + 1), a(n + 1);
-  vector<bool> vis(n + 1);
-  for (int i = 1; i < n; i++) {
+  vector<int> vis(n + 1);
+  int expectsum = 0;
+  for (int i = 1; i <= n - 1; i++) {
     cin >> s[i];
     a[i] = s[i] - s[i - 1];
-  }
-  int t = 0, cnt = 0;
-  for (int i = 1; i < n; i++) {
     if (a[i] <= n) {
-      vis[a[i]] = true;
+      vis[a[i]]++;
     }
   }
-  int sum = 0;
-  for (int i = 1; i <= n; i++) {
-    if (!vis[i]) {
-      sum += i;
-      cnt++;
-    }
-  }
-  if (cnt > 2) {
-    cout << "NO\n";
+  if (n == 2 && a[1] <= 2) {
+    cout << "YES\n";
     return;
   }
   for (int i = 1; i <= n; i++) {
     if (a[i] > n) {
-      if (sum == a[i]) {
-        cout << "YES\n";
-      } else {
+      if (expectsum) {
         cout << "NO\n";
+        return;
       }
-      return;
+      expectsum = a[i];
     }
   }
-  cout << "NO\n";
+  int sum = 0, notvis = 0;
+  for (int i = 1; i <= n; i++) {
+    if (vis[i] > 1) {
+      if (expectsum) {
+        cout << "NO\n";
+        return;
+      }
+      expectsum = i;
+    } else if (!vis[i]) {
+      sum += i;
+      notvis++;
+    }
+  }
+  if (notvis == 1) {
+    cout << "YES\n";
+    return;
+  }
+  cout << (expectsum == sum ? "YES" : "NO") << '\n';
 }
 
 signed main() {
