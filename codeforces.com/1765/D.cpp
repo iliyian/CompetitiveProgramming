@@ -1,5 +1,5 @@
 // date: 2024-06-05 23:50:08
-// tag: 双指针
+// tag: 双指针，贪心，二分（找最大的二者和小于的）
 
 #include <bits/stdc++.h>
 #define int long long
