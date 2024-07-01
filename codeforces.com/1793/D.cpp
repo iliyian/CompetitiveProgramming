@@ -1,3 +1,6 @@
+// date: 2024-06-23 14:04:00
+// tag: mex，贪心，模拟
+
 #include <bits/stdc++.h>
 #define int long long
 #define N ((int)2e5)
