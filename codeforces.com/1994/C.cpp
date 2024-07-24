@@ -12,7 +12,6 @@ void solve() {
     a[i] += a[i - 1];
   }
   
-
   int real = 0;
   for (int i = 1; i <= n; i++) {
     int l = i;
