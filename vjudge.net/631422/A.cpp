@@ -1,3 +1,6 @@
+// date: 2024-05-30 21:04:23
+// tag: 位运算，区间数据结构
+
 #include <bits/stdc++.h>
 #define int long long
 using namespace std;
