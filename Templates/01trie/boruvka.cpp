@@ -1,6 +1,9 @@
 // date: 2024-07-11 13:07:01
 // tag: 01trie，boruvka，mst
 
+// 注意，一般情况下为了给空指针留空间
+// 一般 u 请务必从1开始！！！
+
 #include <bits/stdc++.h>
 #define int long long
 #define inf 0x3f3f3f3f3f3f3f3f
