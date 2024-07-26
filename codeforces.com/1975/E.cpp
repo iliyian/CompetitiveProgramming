@@ -8,7 +8,7 @@ void solve() {
   int n, q;
   cin >> n >> q;
   vector<int> c(n + 1);
-  set<pair<int, int>, greater<pair<int, int>>> s;
+  set<pair<int, int>> s;
   for (int i = 1; i <= n; i++) {
     cin >> c[i];
   }
@@ -114,7 +114,7 @@ void solve() {
     return ans;
   };
 
-  for (int _ = 1; _ <= q; _++) {
+  while (q--) {
     int u;
     cin >> u;
     int v = query(query, dfn[u], dfn[u], 1, n, 1);
@@ -126,32 +126,30 @@ void solve() {
       s.insert({dep[u], u});
     }
 
-    if (s.size() < 2) {
-      cout << "No\n";
+    if (s.empty()) {
+      std::cout << "No\n";
+      continue;
+    }
+    if (s.size() == 1) {
+      std::cout << "Yes\n";
+      continue;
+    }
+    if (s.size() == 2) {
+      if (s.begin()->second == pa[s.rbegin()->second] || s.rbegin()->second == pa[s.begin()->second]) {
+        std::cout << "Yes\n";
+      } else {
+        std::cout << "No\n";
+      }
       continue;
     }
     
-    int x = s.begin()->first;
-    bool f = true;
-
-    while (x != 1) {
-      if (!c[x]) {
-        cout << "Yes\n";
-        goto nxt;
-      }
-      int exp = dfn[top[x]] - dfn[x] + 1;
-      if (exp != query(query, dfn[top[x]], dfn[x], 1, n, 1)) {
-        cout << "No\n";
-        goto nxt;
-      }
-      x = pa[top[x]];
+    int x = s.begin()->second, y = s.rbegin()->second;
+    if (hldquery(x, y) == s.size()) {
+      std::cout << "Yes\n";
+    } else {
+      std::cout << "No\n";
     }
-
-    
-
-    nxt:;
   }
-
 }
 
 signed main() {

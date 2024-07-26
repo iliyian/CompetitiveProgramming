@@ -1,10 +1,13 @@
+// date: 2024-07-26 14:33:14
+// tag: 树，贪心，暴力
+
 #include <bits/stdc++.h>
 #define int long long
 using namespace std;
 
 void solve() {
-  int a, b, n;
-  cin >> n >> a >> b;
+  int n, x, y;
+  std::cin >> n >> x >> y;
   vector<vector<int>> g(n + 1);
   for (int i = 2; i <= n; i++) {
     int u, v;
@@ -12,58 +15,52 @@ void solve() {
     g[u].push_back(v);
     g[v].push_back(u);
   }
-  vector<vector<int>> pa(n + 1, vector<int>(21));
-  vector<int> dep(n + 1), siz(n + 1);
+  vector<int> pa(n + 1);
+  vector<int> dep(n + 1);
+  int tot = 0, maxd = 0;
   auto dfs = [&](auto self, int u, int p) -> void {
-    pa[u][0] = p;
     dep[u] = dep[p] + 1;
-    siz[u] = 1;
-    for (int i = 1; i <= n; i++) {
-      pa[u][i] = pa[pa[u][i - 1]][i - 1];
+    if (dep[u] > dep[maxd]) {
+      maxd = u;
     }
     for (int v : g[u]) {
       if (v != p) {
+        pa[v] = u;
         self(self, v, u);
-        siz[u] += siz[v];
       }
     }
+  };
+  auto p = [&](int x, int d) -> int {
+    while (d--) {
+      x = pa[x];
+    }
+    return x;
   };
   dfs(dfs, 1, 0);
   auto lca = [&](int x, int y) {
-    if (dep[x] < dep[y]) swap(x, y);
-    for (int i = 20; i >= 0; i--) {
-      if (dep[x] - (1 << i) >= dep[y]) {
-        x = pa[x][i];
-      }
+    while (dep[x] != dep[y]) {
+      if (dep[x] < dep[y]) std::swap(x, y);
+      x = pa[x];
     }
     if (x == y) return x;
-    for (int i = 20; i >= 0; i--) {
-      if (pa[x][i] != pa[y][i]) {
-        x = pa[x][i], y = pa[y][i];
-      }
+    while (pa[x] != pa[y]) {
+      x = pa[x], y = pa[y];
     }
-    return pa[x][0];
+    return pa[x];
   };
-  int dis = dep[a] - 1 + dep[b] - 1;
-  int lc = 0;
+  int _lca = lca(x, y);
+  int dis = dep[x] + dep[y] - dep[_lca] * 2;
+  int z = 0, ans = 2 * (n - 1) + (dis + 1) / 2;
   if (dis % 2 == 0) {
-    dis /= 2;
-    if (dep[a] < dep[b]) swap(a, b);
-    for (int i = 20; i >= 0; i--) {
-      if (dis & 1 >> i) {
-        a = pa[a][i];
-      }
-    }
-    int maxsz = 0;
-    for (int v : g[a]) {
-      int sz = siz[v] - 1;
-      if (v == pa[a][0]) {
-        sz = n - siz[a];
-      }
-      maxsz = max(maxsz, sz);
-    }
-    int ans = dis + 
+    z = p(dep[x] > dep[y] ? x : y, dis / 2);
+  } else {
+    z = (dep[x] > dep[y] ? p(x, dis / 2) : p(y, dis / 2 + 1));
   }
+  dep[z] = 1;
+  maxd = 0;
+  dfs(dfs, z, 0);
+  ans -= dep[maxd] - dep[z];
+  std::cout << ans << '\n';
 }
 
 signed main() {
