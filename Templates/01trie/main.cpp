@@ -2,6 +2,12 @@
 // tag: 01trie，
 // wa#01: cnt初始值应该为1,这样才能变成2,而不是一开始就是0
 
+// tot初始值为1是为了特殊情况下trie[u][0|1]=0后trie[0][0|1]=0;
+// 避免干扰正常数据
+
+// 以及多测只清空cnt和val即可，因为tot本身不携带具体信息
+// 仅仅在trie上存自己和val的索引
+
 #include <bits/stdc++.h>
 #define N 100005
 using namespace std;
