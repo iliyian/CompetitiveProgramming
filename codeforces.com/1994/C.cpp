@@ -1,3 +1,6 @@
+// date: 2024-07-30 16:25:40
+// tag: 二分
+
 #include <algorithm>
 #include <bits/stdc++.h>
 #define int long long
@@ -11,17 +14,14 @@ void solve() {
     std::cin >> a[i];
     a[i] += a[i - 1];
   }
-  
-  int real = 0;
-  for (int i = 1; i <= n; i++) {
-    int l = i;
-    while (l <= n) {
-      int r = std::upper_bound(a.begin() + l, a.end(), a[l - 1] + x) - a.begin();
-      real += r - l;
-      l = r + 1;
-    }
+  std::vector<int> f(n + 2);
+  int ans = 0;
+  for (int i = n; i >= 0; i--) {
+    int j = std::upper_bound(a.begin(), a.end(), a[i] + x) - a.begin();
+    f[i] = f[j] + j - i - 1;
+    ans += f[i];
   }
-  std::cout << real << '\n';
+  std::cout << ans << '\n';
 }
 
 signed main() {
