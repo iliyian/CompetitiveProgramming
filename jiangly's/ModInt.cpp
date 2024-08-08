@@ -1,5 +1,3 @@
-#include <bits/stdc++.h>
-
 using u32 = unsigned;
 using i64 = long long;
 using u64 = unsigned long long;
