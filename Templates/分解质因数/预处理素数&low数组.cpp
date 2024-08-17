@@ -1,7 +1,7 @@
 // date: 2024-07-25 16:37:38
 // tag: 并查集，观察
-// 这是O(n+nlogn)的吗？考虑质因数数量最多为O(logn)
-// 显著快于oi-wiki打表前提下的O(sqrt(n/lnn)) ?
+// 这是O(n+qlogn)的吗？考虑质因数数量最多为O(logn)
+// 显著快于oi-wiki打表前提下的O(qsqrt(n/lnn)) ?
 
 #include <bits/stdc++.h>
 #define int long long

@@ -5,13 +5,13 @@ using namespace std;
 
 vector<Pig> pigs(N + 1);
 vector<char> deck(M + 1);
-vector<bool> isZhong(N + 1), isFan(N + 1), isLeiFan(N + 1), weaponed(N + 1);
 
 int n, m, deckid = 1;
 
 struct Pig {
   char id;
   int life = 0, idx;
+  bool isZhong, isFan, isLeifan = false;
   vector<char> cards;
 };
 
@@ -35,7 +35,7 @@ int findcard(int pig, char card) {
   return -1ll;
 };
 
-bool canDo(int object, int subject, bool isGood) {    
+bool canDo(int object, int subject, bool isGood) {
   switch (pigs[subject].id) {
     case 'M': {
       if (isGood) {
