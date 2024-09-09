@@ -2,13 +2,17 @@
 // tag: 字符串哈希
 // 关键在于u64自然溢出，太妙了
 
+// 注意这里有点问题，有可能被刻意hack，但我也不确定。。总之可能还是弄两个模数比较靠谱
+// 如1e9+7,1e9+9,1e9+21,1e9+33,都可以，比玄学溢出好...
+// 见 [https://oi-wiki.org/string/hash/#卡自然溢出-hash]
+
 #include <bits/stdc++.h>
 #define int long long
 // using namespace std;
 
 using u64 = unsigned long long;
 
-constexpr int base = 1e9 + 7;
+constexpr int base = 1e9 + 7; // 重要！！base千万别写26之类的数，很容易被卡碰撞
 
 void solve() {
   int n, k;

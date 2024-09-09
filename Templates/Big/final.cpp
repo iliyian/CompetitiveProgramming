@@ -131,6 +131,29 @@ struct Big:vector<int> {
   bool operator >= (const Big &b) {
     return !(*this < b);
   }
+  bool operator != (int x) {
+    return (*this) != Big(x);
+  }
+  bool operator == (int x) {
+    return !((*this) != x);
+  }
+  bool operator != (const Big &b) {
+    return ((*this) < b) || (b < (*this));
+  }
+  bool mod2() {
+    return (*this)[0] % 2;
+  }
+  void div2() {
+    for (int i = size() - 1; i > 0; i--) {
+      if ((*this)[i] % 2) {
+        (*this)[i - 1] += BASE;
+        (*this)[i]--;
+      }
+      (*this)[i] /= 2;
+    }
+    (*this)[0] /= 2;
+    while (size() >= 2 && !back()) pop_back();
+  }
 };
 
 ostream& operator << (ostream &os, const Big &b) {
@@ -145,20 +168,40 @@ istream& operator >> (istream &is, Big &b) {
   return is;
 }
 
+Big gcd(Big &a, Big &b, Big &p) {
+  if (b == 0) return a * p;
+  while (!a.mod2() && !b.mod2()) {
+    a.div2();
+    b.div2();
+    p = p * 2;
+  }
+  while (!a.mod2()) {
+    a.div2();
+  }
+  while (!b.mod2()) {
+    b.div2();
+  }
+  if (a < b) swap(a, b);
+  a = a - b;
+  return gcd(b, a, p);
+}
+
 signed main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-  freopen("main.in", "r", stdin);
-  freopen("main.out", "w", stdout);
+  // freopen("main.in", "r", stdin);
+  // freopen("main.out", "w", stdout);
+
+  // Big a, b, c(1);
+  // std::cin >> a >> b;
+  // std::cout << gcd(a, b, c) << '\n';
 
   int m;
   Big n;
   cin >> m >> n;
   Big t = n.root(m);
-  Big c(t.size() - 1, 0);
-  c.push_back(pow(10, to_string(t.back()).size() - 1));
-  cout << (t - c) / 2 << '\n';
+  std::cout << t << '\n';
 
   return 0;
 }

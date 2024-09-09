@@ -6,15 +6,8 @@ string num = "06789TJQKA0";
 // CDSH
 
 map<char, int> pos = {
-  {'6', 1},
-  {'7', 2},
-  {'8', 3},
-  {'9', 4},
-  {'T', 5},
-  {'J', 6},
-  {'Q', 7},
-  {'K', 8},
-  {'A', 9},
+    {'6', 1}, {'7', 2}, {'8', 3}, {'9', 4}, {'T', 5},
+    {'J', 6}, {'Q', 7}, {'K', 8}, {'A', 9},
 };
 
 pair<char, char> req(pair<char, char> card) {
@@ -30,7 +23,7 @@ pair<char, char> req(pair<char, char> card) {
 
 hash<string> h;
 
-unordered_map<int, unordered_map<int, int>> vis;
+map<int, map<int, int>> vis;
 
 bool dfs(const string &a, const string &b) {
   int &res = vis[h(a)][h(b)];
@@ -43,7 +36,8 @@ bool dfs(const string &a, const string &b) {
     auto card = pair{a[i], a[i + 1]};
     auto p = req(card);
     string ps = {p.first, p.second};
-    if (a[i] == '9' || b.find(ps) == string::npos && a.find(ps) == string::npos) {
+    if (a[i] == '9' ||
+        b.find(ps) == string::npos && a.find(ps) == string::npos) {
       if (a.size() == 2) {
         res = 1;
         return true;
@@ -61,7 +55,7 @@ bool dfs(const string &a, const string &b) {
     res = -1;
     return false;
   }
-  res = ( !dfs(b, a) ? 1 : -1);
+  res = (!dfs(b, a) ? 1 : -1);
   return res == 1 ? true : false;
 }
 

@@ -1,5 +1,6 @@
 // date: 2024-08-24 13:28:45
 // tag: 树状数组维护多叉树的树上逆序对
+// [k*(x-1)+2, k*x+1]
 
 #include <bits/stdc++.h>
 #define int long long
