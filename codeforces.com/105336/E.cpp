@@ -1,3 +1,6 @@
+// date: 2024-09-09 17:45:54
+// tag: 期望
+
 #include <bits/stdc++.h>
 #define int long long
 using namespace std;
