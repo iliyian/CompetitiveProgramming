@@ -3,5 +3,7 @@
 *.ans
 *.out
 
+*.in
+
 prime.*
 main
