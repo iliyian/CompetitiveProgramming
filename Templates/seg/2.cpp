@@ -1,106 +1,120 @@
+// date: 2024-09-21 21:43:24
+// tag: 线段树，区间加乘
+
 #include <bits/stdc++.h>
-#define N 100001
 #define int long long
-using namespace std;
+#define lc p << 1
+#define rc p << 1 | 1
+#define mid (s + t) / 2
 
-int a[N], mod;
+constexpr int mod = 998244353;
+constexpr int N = 2e5;
 
-struct Seg {
-  Seg() {
-    mul = 1;
+std::vector<int> a(N + 1);
+std::vector<std::array<int, 2>> tag(N << 2);
+std::vector<int> d(N << 2), len(N << 2);
+
+int n, m;
+
+int qpow(int a, int b) {
+  int ans = 1;
+  while (b) {
+    if (b & 1) ans = ans * a % mod;
+    a = a * a % mod;
+    b /= 2;
   }
-  int v, mul, add;
-} segs[N << 2];
-
-void pushup(int rt) {
-  segs[rt].v = (segs[rt << 1].v + segs[rt << 1 | 1].v) % mod;
+  return ans;
 }
 
-void pushdown(int s, int t, int rt) {
-  int ls = rt << 1, rs = rt << 1 | 1, mid = s + (t - s >> 1);
-
-  segs[ls].v = segs[rt].mul * segs[ls].v % mod + segs[rt].add * (mid - s + 1) % mod;
-  segs[ls].v %= mod;
-  segs[rs].v = segs[rt].mul * segs[rs].v % mod + segs[rt].add * (t - mid) % mod;
-  segs[rs].v %= mod;
-
-  segs[ls].mul = segs[rt].mul * segs[ls].mul % mod;
-  segs[rs].mul = segs[rt].mul * segs[rs].mul % mod;
-  segs[ls].add = (segs[ls].add * segs[rt].mul % mod + segs[rt].add) % mod;
-  segs[rs].add = (segs[rs].add * segs[rt].mul % mod + segs[rt].add) % mod;
-
-  segs[rt].add = 0, segs[rt].mul = 1;
+int inv(int x) {
+  return qpow(x, mod - 2);
 }
 
-void build(int s, int t, int rt) {
+void pull(int p) {
+  d[p] = d[lc] + d[rc];
+  d[p] %= mod;
+}
+
+void P(int p, int c, int typ) {
+  if (typ == 1) { // add
+    tag[p][0] = (tag[p][0] + c) % mod;
+    d[p] = (d[p] + len[p] * c % mod) % mod;
+  }
+  if (typ == 2) { // mul
+    tag[p][0] = tag[p][0] * c % mod;
+    tag[p][1] = tag[p][1] * c % mod;
+    d[p] = d[p] * c % mod;
+  }
+}
+
+void push(int p) {
+  if (tag[p][1] != 1) {
+    P(lc, tag[p][1], 2);
+    P(rc, tag[p][1], 2);
+  }
+  if (tag[p][0]) {
+    P(lc, tag[p][0], 1);
+    P(rc, tag[p][0], 1);
+  }
+  tag[p] = {0, 1};
+}
+
+void build(int s, int t, int p) {
+  tag[p] = {0, 1};
+  len[p] = t - s + 1;
   if (s == t) {
-    segs[rt].v = a[s];
+    d[p] = a[s];
     return;
   }
-  int mid = s + (t - s >> 1);
-  build(s, mid, rt << 1);
-  build(mid + 1, t, rt << 1 | 1);
-  pushup(rt);
+  build(s, mid, lc);
+  build(mid + 1, t, rc);
+  pull(p);
 }
 
-void mul(int l, int r, int s, int t, int rt, int k) {
-  if (l <= s && t <= r) {
-    segs[rt].mul = segs[rt].mul * k % mod;
-    segs[rt].add = segs[rt].add * k % mod;
-    segs[rt].v = segs[rt].v * k % mod;
-    return;
-  }
-  pushdown(s, t, rt);
-  int mid = s + (t - s >> 1);
-  if (l <= mid) mul(l, r, s, mid, rt << 1, k);
-  if (r > mid) mul(l, r, mid + 1, t, rt << 1 | 1, k);
-  pushup(rt);
+void add(int l, int r, int s, int t, int p, int c) {
+  if (l > t || r < s) return;
+  if (l <= s && t <= r) return P(p, c, 1);
+  push(p);
+  add(l, r, s, mid, lc, c);
+  add(l, r, mid + 1, t, rc, c);
+  pull(p);
 }
 
-void add(int l, int r, int s, int t, int rt, int k) {
-  if (l <= s && t <= r) {
-    segs[rt].add = (segs[rt].add + k) % mod;
-    segs[rt].v = (segs[rt].v + k * (t - s + 1)) % mod;
-    return;
-  }
-  pushdown(s, t, rt);
-  int mid = s + (t - s >> 1);
-  if (l <= mid) add(l, r, s, mid, rt << 1, k);
-  if (r > mid) add(l, r, mid + 1, t, rt << 1 | 1, k);
-  pushup(rt);
+void mul(int l, int r, int s, int t, int p, int c) {
+  if (l > t || r < s) return;
+  if (l <= s && t <= r) return P(p, c, 2);
+  push(p);
+  mul(l, r, s, mid, lc, c);
+  mul(l, r, mid + 1, t, rc, c);
+  pull(p);
 }
 
-int query(int l, int r, int s, int t, int rt) {
-  if (l <= s && t <= r) {
-    return segs[rt].v;
-  }
-  pushdown(s, t, rt);
-  int mid = s + (t - s >> 1), ans = 0;
-  if (l <= mid) ans += query(l, r, s, mid, rt << 1);
-  if (r > mid) ans += query(l, r, mid + 1, t, rt << 1 | 1);
-  return ans % mod;
+int query(int l, int r, int s, int t, int p) {
+  if (l > t || r < s) return 0;
+  if (l <= s && t <= r) return d[p];
+  push(p);
+  return (query(l, r, s, mid, lc) + query(l, r, mid + 1, t, rc)) % mod;
 }
 
 signed main() {
-  ios::sync_with_stdio(false); cin.tie(0);
-  freopen("data.in", "r", stdin);
-  int n, q;;
-  cin >> n >> q >> mod;
-  for (int i = 1; i <= n; i++)
-    cin >> a[i];
-  build(1, n, 1);
-  for (int i = 0; i < q; i++) {
-    int op, l, r, k;
-    cin >> op >> l >> r;
-    if (op == 1) {
-      cin >> k;
-      mul(l, r, 1, n, 1, k);
-    } else if (op == 2) {
-      cin >> k;
-      add(l, r, 1, n, 1, k);
-    } else {
-      cout << query(l, r, 1, n, 1) << '\n';
-    }
+  std::cin.tie(nullptr)->sync_with_stdio(false);
+  freopen("F.in", "r", stdin);
+
+  std::cin >> n >> m;
+  for (int i = 1; i <= n; i++) {
+    std::cin >> a[i];
   }
+  build(1, n, 1);
+  for (int i = 1; i <= m; i++) {
+    int l, r, x;
+    std::cin >> l >> r >> x;
+    int len = r - l + 1;
+    mul(l, r, 1, n, 1, (len - 1) * inv(len) % mod);
+    add(l, r, 1, n, 1, inv(len) * x % mod);
+  }
+  for (int i = 1; i <= n; i++) {
+    std::cout << query(i, i, 1, n, 1) << ' ';
+  }
+  
   return 0;
 }
