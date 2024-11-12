@@ -1,59 +1,54 @@
+// date: 2024-11-12 22:07:35
+// tag: 贪心
+
 #include <bits/stdc++.h>
-#include <queue>
 #define int long long
-using namespace std;
 
 void solve() {
   int n, m;
   std::cin >> n >> m;
-  std::vector<int> a(n + 1), x(m + 1), t(m + 1);
-  // std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<>> q;
-  std::priority_queue<int, std::vector<int>, std::greater<>> q;
+  std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<>> q;
+  std::vector<int> a(n + 1), raw(n + 1);
   for (int i = 1; i <= n; i++) {
     std::cin >> a[i];
+    raw[i] = a[i];
   }
-  auto raw = a;
+  std::vector<int> x(m + 1), t(m + 1);
   for (int i = 1; i <= m; i++) {
     std::cin >> x[i] >> t[i];
   }
-  std::vector<int> nxt(m + 1), pos(n + 1);
-  for (int i = 1; i <= m; i++) {
-    nxt[pos[t[i]]] = i;
-    if (!pos[t[i]]) {
-      q.push(i);
-    }
+  std::vector<int> nxt(m + 1), pos(n + 1, m + 1);
+  for (int i = m; i >= 1; i--) {
+    nxt[i] = pos[t[i]];
     pos[t[i]] = i;
   }
   for (int i = 1; i <= n; i++) {
-    if (!pos[i]) {
-      q.push({});
-    }
+    q.push({pos[i], i});
   }
-  for (int i = 1; i <= m; i++) {
-    std::cout << nxt[i] << " \n"[i == m];
-  }
-  int k = 1, ans = 0;
+  int curstation = 1, nowpos = 0;
   while (!q.empty()) {
-    auto [pos, id] = q.top(); q.pop();
-    if (k <= m && x[k] - ans <= a[id]) {
-      ans = x[k];
-      a[t[pos]] = raw[t[pos]];
-      q.push(nxt[pos]);
-      if (a[t[pos]] != a[k]) {
-        q.push(k);
+    auto [idx, id] = q.top(); q.pop();
+    int d;
+    if (curstation <= m && a[id] >= (d = x[curstation] - nowpos)) {
+      a[id] -= d;
+      nowpos = x[curstation];
+      a[t[curstation]] = raw[t[curstation]];
+      q.push({nxt[curstation], t[curstation]});
+      if (id != t[curstation]) {
+        q.push({idx, id});
       }
-      k++;
+      curstation++;
     } else {
-      ans += a[t[pos]];
-      a[t[pos]] = 0;
+      nowpos += a[id];
+      a[id] = 0;
     }
   }
-  std::cout << ans << '\n';
+  std::cout << nowpos << '\n';
 }
 
 signed main() {
   std::cin.tie(nullptr)->sync_with_stdio(false);
-  int t;
+  int t = 1;
   std::cin >> t;
   while (t--) {
     solve();
