@@ -16,17 +16,7 @@ void answer(int x) {
 void solve() {
   int n;
   std::cin >> n;
-  // for(int i = 1; i <= n; i++)
-  // {
-  //   cin >> a[i]
-  // }
-  
-  
-  
-  
-  
-  
-  
+
   std::vector<std::vector<int>> g(n + 1);
   for (int i = 1; i <= n; i++) {
     int lc, rc;
@@ -34,6 +24,7 @@ void solve() {
     if (lc) g[i].push_back(lc), g[lc].push_back(i);
     if (rc) g[i].push_back(rc), g[rc].push_back(i);
   }
+  
   std::vector<int> dis(n + 1), vis(n + 1), del(n + 1), dep(n + 1), siz(n + 1);
   std::vector<std::vector<int>> pa(n + 1, std::vector<int>(21));
   int c;
