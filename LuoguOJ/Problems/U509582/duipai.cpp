@@ -8,37 +8,46 @@ int n;
 
 std::vector<int> cur;
 
-void dfs(int u, int p) {
-  if (!cur.empty()) {
+void dfs(int u, int p, int rt) {
+  if (!cur.empty() && u > rt) {
     auto tmp = cur;
     std::sort(tmp.begin(), tmp.end());
-    vec.push_back(tmp[(tmp.size() - 1) / 2]);
+    vec.push_back(tmp[tmp.size() / 2]);
   }
   for (auto [v, w] : g[u]) {
     if (v != p) {
       cur.push_back(w);
-      dfs(v, u);
+      dfs(v, u, rt);
       cur.pop_back();
     }
   }
 }
 
-signed main(signed argc, char **argv) {
-  if (argc > 1) freopen(argv[1], "r", stdin);
-  if (argc > 2) freopen(argv[2], "w", stdout);
+signed main( ) {
   std::cin.tie(nullptr)->sync_with_stdio(false);
   std::cin >> n;
   g.assign(n + 1, {});
+  std::vector<int> weights;
   for (int i = 2; i <= n; i++) {
     int x, y, w;
     std::cin >> x >> y >> w;
     g[x].push_back({y, w});
     g[y].push_back({x, w});
+    weights.push_back(w);
   }
   for (int i = 1; i <= n; i++) {
-    dfs(1, 0);
+    dfs(i, 0, i);
   }
   std::sort(vec.begin(), vec.end());
-  std::cout << vec[(vec.size() - 1) / 2] << '\n';
+  std::sort(weights.begin(), weights.end());
+  std::map<int, int> cnt;
+  for (auto i : vec) {
+    std::cout << i << ' ';
+    cnt[i]++;
+  }
+  // std::cout << '\n';
+  // std::cout << vec.size() << '\n';
+  std::cout << vec[vec.size() / 2] << '\n';
+  std::cout << weights[weights.size() / 2] << '\n';
   return 0;
 }

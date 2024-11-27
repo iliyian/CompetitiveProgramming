@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 #define int long long
 
-constexpr int N = 5e4;
+constexpr int N = 1e5;
 
 std::vector<std::pair<int, int>> g[N + 1];
 std::vector<int> siz(N + 1), maxx(N + 1), vis(N + 1), len(N + 1), cnt(N + 1);
@@ -52,6 +52,7 @@ void calc(int u, int p) {
 
 void work(int u, int p) {
   vis[u] = 1;
+  add(0, 1);
   for (auto [v, w] : g[u]) {
     if (v != p && !vis[v]) {
       cnt[v] = (w <= mid);
@@ -67,9 +68,11 @@ void work(int u, int p) {
       }
     }
   }
+  add(0, -1);
   while (!vec.empty()) {
     int i = vec.back();
     add(len[i] - cnt[i] * 2, -1);
+    vec.pop_back();
   }
   for (auto [v, w] : g[u]) {
     if (v != p && !vis[v]) {
@@ -83,11 +86,13 @@ void work(int u, int p) {
 
 bool check() {
   maxx[0] = INT_MAX;
+  std::fill(vis.begin(), vis.end(), 0);
   sum = n;
   tot = 0;
+  rt = 0;
   getrt(1, 0);
   work(rt, 0);
-  return tot >= (n * (n + 1) / 2 + 1) / 2;
+  return tot > n * (n - 1) / 2 / 2;
 }
 
 signed main() {
