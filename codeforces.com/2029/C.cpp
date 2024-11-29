@@ -1,9 +1,12 @@
+// date: 2024-11-28 22:49:29
+// tag: 二分
+
 #include <bits/stdc++.h>
 #define int long long
 
 int get(int a, int b) {
-  if (a < b) return -1;
-  if (a > b) return 1;
+  if (a > b) return -1;
+  if (a < b) return 1;
   return 0;
 }
 
@@ -14,17 +17,29 @@ void solve() {
   for (int i = 1; i <= n; i++) {
     std::cin >> a[i];
   }
-  std::vector<std::array<int, 3>> f(n + 1, {0, 0, 0});
+
+  std::vector<int> mx(n + 1);
+  int cur = 0;
   for (int i = 1; i <= n; i++) {
-    f[i][0] = f[i - 1][0] + get(a[i], f[i - 1][0]);
-    // if (i > 1) {
-      f[i][1] = std::max(f[i - 1][0], f[i - 1][1]);
-    // }
-    if (i > 1) {
-      f[i][2] = std::max(f[i - 1][1] + get(a[i], f[i - 1][1]), f[i - 1][2] + get(a[i], f[i - 1][2]));
-    }
+    cur += get(cur, a[i]);
+    mx[i] = std::max(mx[i - 1], cur);
   }
-  std::cout << f[n][2] << '\n';
+  auto check = [&](int mid) {
+    for (int i = n; i >= 1; i--) {
+      if (mx[i] >= mid) return true;
+      if (mid > a[i]) mid++;
+      else mid--;
+    }
+    return false;
+  };
+
+  int l = 0, r = n - 1, ans = -1;
+  while (l <= r) {
+    int mid = (l + r) / 2;
+    if (check(mid)) l = mid + 1, ans = mid;
+    else r = mid - 1;
+  }
+  std::cout << ans << '\n';
 }
 
 signed main() {
