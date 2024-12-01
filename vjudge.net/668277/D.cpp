@@ -27,30 +27,34 @@ void getrt(int u, int p) {
 void calc(int u, int p) {
   pre[u] = pos[a[u]], pos[a[u]] = u;
   if (!pre[u]) {
-  // if (!s.count(a[u])) {
     if (a[u] == a[rt]) ans++;
     else {
       ans += tot[a[u]];
       cur[a[u]]++;
     }
-    // s.insert(a[u]);
   }
   for (int v : g[u]) {
     if (v != p && !vis[v]) {
       calc(v, u);
     }
   }
-  // if (s.count(a[u])) {
-  //   s.erase(a[u]);
-  // }
   pos[a[u]] = pre[u];
 };
 
 void update(int u, int p) {
-  tot[a[u]] += cur[a[u]];
+  tot[a[u]] += cur[a[u]], cur[a[u]] = 0;
   for (int v : g[u]) {
     if (v != p && !vis[v]) {
       update(v, u);
+    }
+  }
+}
+
+void clear(int u, int p) {
+  tot[a[u]] = cur[a[u]] = pos[a[u]] = pre[a[u]] = 0;
+  for (int v : g[u]) {
+    if (v != p && !vis[v]) {
+      clear(v, u);
     }
   }
 }
@@ -64,7 +68,7 @@ void work(int u, int p) {
       update(v, u);
     }
   }
-
+  clear(u, p);
   for (int v : g[u]) {
     if (v != p && !vis[v]) {
       sum = siz[v];

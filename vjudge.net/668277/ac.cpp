@@ -41,7 +41,7 @@ void dfs2(long long now, long long fa) {
     if (a[now] == a[he])
       tol++;
     else {
-      // tol += sum[a[now]];
+      tol += sum[a[now]];
       g[a[now]]++;
     }
   }
