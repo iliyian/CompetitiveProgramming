@@ -1,3 +1,6 @@
+// date: 2024-11-29 21:35:56
+// tag: gcd性质，构造
+
 #include <bits/stdc++.h>
 #define int long long
 
