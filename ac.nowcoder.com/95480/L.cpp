@@ -13,24 +13,26 @@ void solve() {
     std::cin >> a[i] >> b[i] >> c[i];
     g[b[i]].push_back({a[i], c[i]});
   }
-  std::vector<std::vector<int>> dis(N + 1, std::vector<int>(N + 1, INT_MAX));
-  std::priority_queue<std::array<int, 3>, std::vector<std::array<int, 3>>, std::greater<>> q;
+  std::vector<std::vector<int>> dis(N + 1, std::vector<int>(N + 1, inf));
+  // std::priority_queue<std::array<int, 3>, std::vector<std::array<int, 3>>, std::greater<>> q;
+  std::queue<std::array<int, 3>> q;
   for (int i = 1; i <= N; i++) {
     q.push({dis[i][i] = 0, i, i});
   }
   while (!q.empty()) {
-    auto [d, x, y] = q.top(); q.pop();
+    // auto [d, x, y] = q.top(); q.pop();
+    auto [d, x, y] = q.front(); q.pop();
     if (dis[x][y] != d) continue;
     for (auto [v, w] : g[x]) {
       if (dis[v][y] > dis[x][y] + w) {
         dis[v][y] = dis[x][y] + w;
-        q.push({dis[v][y], w});
+        q.push({dis[v][y], v, y});
       }
     }
     for (auto [v, w] : g[y]) {
       if (dis[x][v] > dis[x][y] + w) {
         dis[x][v] = dis[x][y] + w;
-        q.push({dis[x][v], w});
+        q.push({dis[x][v], x, v});
       }
     }
   }
@@ -46,11 +48,11 @@ void solve() {
   int ans = 0;
   for (int i = 1; i <= n; i++) {
     for (int j = 1; j <= n; j++) {
-      if (dis[i][j] == inf) {
+      if (dis[x[i]][y[j]] == inf) {
         std::cout << -1 << '\n';
         return;
       }
-      ans += dis[i][j];
+      ans += dis[x[i]][y[j]];
     }
   }
   std::cout << ans << '\n';

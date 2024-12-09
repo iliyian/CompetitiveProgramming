@@ -1,44 +1,56 @@
+#include <cstdio>
+#include <cmath>
+#include <algorithm>
+#include <climits>
 #include <bits/stdc++.h>
-#define int long long
 
-constexpr double eps = 1e-4;
+using namespace std;
+
+constexpr double eps = 1e-5;
 constexpr int N = 5e5;
 
-double x[N + 1];
-int w[N + 1], n;
+double x[N + 1], w[N + 1];
+int n;
 
 double check(double mid) {
   double ans = 0;
   for (int i = 1; i <= n; i++) {
-    ans += std::pow(std::abs(x[i] - mid), 3) * w[i];
+    double t = fabs(x[i] - mid);
+    ans += t * t * t * w[i];
   }
   return ans;
-};
-
-void solve() {
-  std::cin >> n;
-  double l = INT_MAX, r = INT_MIN;
-  for (int i = 1; i <= n; i++) {
-    std::cin >> x[i] >> w[i];
-    l = std::min(l, x[i]);
-    r = std::max(r, x[i]);
-  }
-  while (l < r - eps * 2) {
-    double mid = (l + r) / 2;
-    double lmid = mid - eps, rmid = mid + eps;
-    if (check(lmid) < check(rmid)) r = rmid;
-    else l = lmid;
-  }
-  std::cout << (int)std::round(check(l)) << '\n';
 }
 
-signed main() {
-  freopen("A.in", "r", stdin);
+void solve() {
+  scanf("%d", &n);
+  // std::cin >> n;
+  double l = INT_MAX, r = INT_MIN;
+  for (int i = 1; i <= n; i++) {
+    scanf("%lf %lf", &x[i], &w[i]);
+    // std::cin >> x[i] >> w[i];
+    l = min(l, x[i]);
+    r = max(r, x[i]);
+  }
+  while (r - l > eps) {
+    double lmid = (l * 2 + r) / 3;
+    double rmid = (l + r * 2) / 3;
+    if (check(lmid) <= check(rmid))
+      r = rmid;
+    else
+      l = lmid;
+  }
+  printf("%d\n", (int)round(check(l)));
+  // std::cout << (int)round(check(l)) << '\n';
+}
+
+int main() {
   std::cin.tie(nullptr)->sync_with_stdio(false);
   int t;
-  std::cin >> t;
+  scanf("%d", &t);
+  // std::cin >> t;
   for (int i = 1; i <= t; i++) {
-    std::cout << "Case #" << i << ": ";
+    printf("Case #%d: ", i);
+    // std::cout << "Case #" << i << ": ";
     solve();
   }
   return 0;
