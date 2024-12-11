@@ -1,3 +1,6 @@
+// date: 2024-12-09 22:06:08
+// tag: 一类贡献转换问题 
+
 #include <bits/stdc++.h>
 using namespace std;
 
