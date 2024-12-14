@@ -42,12 +42,12 @@ signed main( ) {
   std::sort(weights.begin(), weights.end());
   std::map<int, int> cnt;
   for (auto i : vec) {
-    std::cout << i << ' ';
+    // std::cout << i << ' ';
     cnt[i]++;
   }
   // std::cout << '\n';
   // std::cout << vec.size() << '\n';
   std::cout << vec[vec.size() / 2] << '\n';
-  std::cout << weights[weights.size() / 2] << '\n';
+  // std::cout << weights[weights.size() / 2] << '\n';
   return 0;
 }

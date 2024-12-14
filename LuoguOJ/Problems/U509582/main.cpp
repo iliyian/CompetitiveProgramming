@@ -10,6 +10,7 @@ int rt = 0, sum, n, mid, tot;
 
 void getrt(int u, int p) {
   siz[u] = 1;
+  maxx[u] = 0;
   for (auto [v, w] : g[u]) {
     if (v != p && !vis[v]) {
       getrt(v, u);
@@ -78,8 +79,8 @@ void work(int u, int p) {
     if (v != p && !vis[v]) {
       sum = siz[v];
       rt = 0;
-      getrt(v, u);
-      work(rt, u);
+      getrt(v, 0);
+      work(rt, 0);
     }
   }
 }
