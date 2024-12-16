@@ -1,0 +1,36 @@
+#include <bits/stdc++.h>
+#define int long long
+
+int calc(int x) {
+  int ans = 0;
+  while (x) ans += x % 10, x /= 10;
+  return ans;
+}
+
+std::string rev(std::string str) {
+  std::reverse(str.begin(), str.end());
+  return str;
+}
+
+void solve() {
+  int n;
+  std::cin >> n;
+  int mx = 0;
+  for (int i = 1; i <= n; i++) {
+    int x;
+    std::cin >> x;
+    int c = calc(x);
+    if (c > mx) mx = c;
+  }
+  std::cout << mx << '\n';
+}
+
+signed main() {
+  std::cin.tie(nullptr)->sync_with_stdio(false);
+  int t = 1;
+  // std::cin >> t;
+  while (t--) {
+    solve();
+  }
+  return 0;
+}
