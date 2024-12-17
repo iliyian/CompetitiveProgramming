@@ -2,12 +2,10 @@
 *.o
 *.out
 *.ans
-
 *.in
-
 prime.*
 main
-
 *.zip
-
 *.doc
+*.html
+exe
