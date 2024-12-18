@@ -9,3 +9,5 @@ main
 *.doc
 *.html
 exe
+*.prv
+*.tmp

@@ -92,6 +92,7 @@ bool check() {
   tot = 0;
   rt = 0;
   getrt(1, 0);
+  getrt(rt, 0);
   work(rt, 0);
   return tot > n * (n - 1) / 2 / 2;
 }
