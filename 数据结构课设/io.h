@@ -10,11 +10,8 @@ class IO {
   char pbuf[MAXSIZE], *pp;
 
 public:
-#if DEBUG
-#else
   IO();
   ~IO();
-#endif
 
   char gc();
   bool blank(char ch);

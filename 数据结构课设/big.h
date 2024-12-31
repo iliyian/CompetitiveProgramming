@@ -4,7 +4,6 @@
 #include "complex.h"
 #include "complex.cpp"
 #include "list.h"
-#include "list.cpp"
 
 using u32 = unsigned int;
 using i64 = long long;

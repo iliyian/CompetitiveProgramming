@@ -118,15 +118,8 @@ Big &Big::operator+=(const Big &b) {
 Big Big::operator-(const Big &b) const {
   Big a = *this;
   if (a < b) {
-    // (a + mod - b) mod p == (a - b) mod p
-    // 避免出出现负数
-    if (!modP) {
-      exit(-1);
-    }
-    while (a.digits.size() < modP) {
-      a.digits.push_back(0);
-    }
-    a.digits.push_back(1);
+    io.write("Error: negative number\n");
+    exit(-1);
   }
   auto i1 = a.digits.begin();
   auto i2 = b.digits.begin();

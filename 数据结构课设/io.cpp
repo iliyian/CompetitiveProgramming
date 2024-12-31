@@ -9,6 +9,8 @@
 #include "big.h"
 #include "big.cpp"
 
+#include <cstdio>
+
 #if DEBUG
 IO::IO() {};
 IO::~IO() {};
