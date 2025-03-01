@@ -11,20 +11,24 @@ void solve() {
     g[x].push_back(y);
     g[y].push_back(x);
   }
-  std::vector<int> dep(n + 1), cnt(n + 1);
+  std::vector<int> dep(n + 1), maxdep(n + 1), cnt(n + 2);
   auto dfs = [&](auto self, int u, int p) -> void {
-    dep[u] = dep[p] + 1;
-    cnt[dep[u]]++;
+    maxdep[u] = dep[u] = dep[p] + 1;
     for (int v : g[u]) {
       if (v != p) {
         self(self, v, u);
+        maxdep[u] = std::max(maxdep[u], maxdep[v]);
       }
     }
+    cnt[dep[u]]++, cnt[maxdep[u] + 1]--;
   };
   dfs(dfs, 1, 0);
   for (int i = 1; i <= n; i++) {
+    // std::cerr << dep[i] << ' ' << maxdep[i] << '\n';
     cnt[i] += cnt[i - 1];
+    // std::cerr << "cnt[i]: " << cnt[i] << '\n';
   }
+  std::cout << n - *std::max_element(cnt.begin() + 1, cnt.end()) << '\n';
 }
 
 int32_t main() {

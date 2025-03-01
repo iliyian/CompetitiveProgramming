@@ -234,6 +234,7 @@ void Big::div2(int base) {
 // 同样是方便快速幂
 int Big::mod2() const { return digits.front() % 2; }
 bool Big::iszero() const {
+  // return digits.size() == 1 && digits.front() == 0 || digits.empty();
   for (auto &i : digits) {
     if (i) {
       return false;
@@ -247,6 +248,7 @@ bool Big::iszero() const {
 Big Big::operator^(Big b) const {
   Big ans(1, modB, modP), a(*this);
   ans.mod();
+  a.mod();
   while (!b.iszero()) {
     if (b.mod2())
       ans = ans * a, ans.mod();

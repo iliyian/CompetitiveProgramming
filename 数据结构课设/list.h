@@ -1,7 +1,13 @@
 #ifndef LIST_H
 #define LIST_H
 
-using size_t = unsigned long;
+#ifdef _WIN32
+    using size_t = unsigned long long;
+#elif __linux__
+    using size_t = unsigned long;
+#else
+    #error "Unsupported platform"
+#endif
 
 template <typename T> class list {
 private:
