@@ -29,9 +29,6 @@ signed main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-  freopen("D.in", "r", stdin);
-  freopen("D.out", "w", stdout);
-
   int _;
   cin >> _;
 

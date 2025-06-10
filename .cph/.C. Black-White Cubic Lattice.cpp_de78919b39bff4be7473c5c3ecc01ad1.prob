@@ -1,0 +1,1 @@
+{"name":"Local: C","url":"c:\\Users\\iliyian\\Downloads\\C. Black-White Cubic Lattice.cpp","tests":[{"id":1741614021225,"input":"2 2 2\nWW\nWW\nBB\nBB\n1 1\n1 1\n2 2\n2 2\n","output":"5"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Users\\iliyian\\Downloads\\C. Black-White Cubic Lattice.cpp","group":"local","local":true}

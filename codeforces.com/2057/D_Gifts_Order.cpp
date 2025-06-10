@@ -1,5 +1,6 @@
 // date: 2025-01-20 17:18:06
 // tag: 区间极差减长度
+// 什么裸线段树
 
 #include <bits/stdc++.h>
 #define int long long

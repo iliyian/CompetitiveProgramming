@@ -1,6 +1,9 @@
 // date: 2024-05-15 21:16:58
 // tag: 计算几何
 
+// date: 2025-05-13 19:27:27
+// tag: 什么坐标轴选择大法？
+
 #include <bits/stdc++.h>
 #define int long long
 using namespace std;
