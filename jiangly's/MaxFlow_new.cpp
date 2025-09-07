@@ -55,7 +55,7 @@ struct MaxFlow {
             return f;
         }
         auto r = f;
-        for (int &i = cur[u]; i < int(g[u].size()); ++i) {
+        for (int &i = cur[u]; i < (int)(g[u].size()); ++i) {
             const int j = g[u][i];
             auto [v, c] = e[j];
             if (c > 0 && h[v] == h[u] + 1) {

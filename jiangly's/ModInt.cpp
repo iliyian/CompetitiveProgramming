@@ -124,6 +124,6 @@ using ModInt = ModIntBase<u32, P>;
 template<u64 P>
 using ModInt64 = ModIntBase<u64, P>;
  
-constexpr u32 P = 1000000007;
-using Z = ModInt<P>;
+constexpr u32 P[2] = {998244353, 1000000007};
+using Z = ModInt<P[0]>;
  

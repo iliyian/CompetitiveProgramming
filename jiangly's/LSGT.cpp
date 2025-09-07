@@ -17,7 +17,7 @@ template <class Info, class Tag> struct LSGT {
         info[p] = _init[l];
         return;
       }
-      int m = l + r >> 1;
+      int m = (l + r) >> 1;
       self(self, l(p), l, m);
       self(self, r(p), m, r);
       pull(p);
@@ -39,7 +39,7 @@ template <class Info, class Tag> struct LSGT {
       info[p] = v;
       return;
     }
-    int m = l + r >> 1;
+    int m = (l + r) >> 1;
     push(p, r - l);
     if (x < m) {
       modify(l(p), l, m, x, v);
@@ -56,7 +56,7 @@ template <class Info, class Tag> struct LSGT {
     if (l >= x and r <= y) {
       return info[p];
     }
-    int m = l + r >> 1;
+    int m = (l + r) >> 1;
     push(p, r - l);
     return query(l(p), l, m, x, y) + query(r(p), m, r, x, y);
   }
@@ -69,7 +69,7 @@ template <class Info, class Tag> struct LSGT {
       apply(p, v, r - l);
       return;
     }
-    int m = l + r >> 1;
+    int m = (l + r) >> 1;
     push(p, r - l);
     Apply(l(p), l, m, x, y, v);
     Apply(r(p), m, r, x, y, v);
@@ -86,11 +86,13 @@ struct Tag {
 
   }
 };
+
 struct Info {
   void apply(const Tag &t, int len) {
 
   }
 };
+
 Info operator+(const Info &a, const Info &b) {
   Info c;
   
