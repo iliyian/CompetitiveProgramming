@@ -92,13 +92,58 @@ std::vector<i64> factorize(i64 n) {
     return p;
 }
 
+std::vector<std::pair<int, int>> work(int x) {
+	auto v = factorize(x);
+	std::vector<std::pair<int, int>> f;
+	int prv = 0;
+	for (int i : v) {
+		if (i != prv) {
+			f.push_back({i, 1});
+		} else {
+			f.back().second++;
+		}
+		prv = i;
+	}
+	return f;
+}
+
+using i128 = __int128;
+
 void solve() {
   int p, q, k;
   std::cin >> p >> q >> k;
-  auto fp = factorize(p), fk = factorize(k);
+	auto fp = work(p), fk = work(k);
   int ans = 0;
-  auto dfs = [&](auto self, int u, int idx) -> void {
-    
+	std::set<int> s;
+	for (auto [v, cnt] : fk) {
+		s.insert(v);
+	}
+	std::set<int> st;
+	auto dfs2 = [&](auto self, i128 u, int idx) -> void {
+		if (idx == fp.size()) {
+			ans++;
+			return;
+		}
+		if (s.count(fp[idx].first)) {
+			self(self, u, idx + 1);
+			return;
+		}
+		i128 vv = 1;
+		auto [v, mx] = fp[idx];
+		for (int j = 0; j <= mx && u * vv <= q; j++, vv *= v) {
+			self(self, u * vv, idx + 1);
+		}
+	};
+	auto dfs = [&](auto self, i128 u, int idx) -> void {
+		if (idx < fk.size()) {
+			auto [v, mx] = fk[idx];
+			i128 vv = 1;
+			for (int j = 0; u * vv <= q; j++, vv *= v) {
+				self(self, u * vv, idx + 1);
+			}
+		} else {
+			dfs2(dfs2, u, 0);
+		}
   };
   dfs(dfs, 1, 0);
   std::cout << ans << '\n';

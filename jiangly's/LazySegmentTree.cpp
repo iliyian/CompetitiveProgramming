@@ -34,13 +34,13 @@ struct LazySegmentTree {
     void pull(int p) {
         info[p] = info[2 * p] + info[2 * p + 1];
     }
-    void apply(int p, const Tag &v) {
-        info[p].apply(v);
-        tag[p].apply(v);
+    void apply(int p, const Tag &v, int len) {
+        info[p].apply(v, len);
+        tag[p].apply(v, len);
     }
-    void push(int p) {
-        apply(2 * p, tag[p]);
-        apply(2 * p + 1, tag[p]);
+    void push(int p, int len) {
+        apply(2 * p, tag[p], len / 2);
+        apply(2 * p + 1, tag[p], len - len / 2);
         tag[p] = Tag();
     }
     void modify(int p, int l, int r, int x, const Info &v) {
@@ -49,7 +49,7 @@ struct LazySegmentTree {
             return;
         }
         int m = (l + r) / 2;
-        push(p);
+        push(p, r - l);
         if (x < m) {
             modify(2 * p, l, m, x, v);
         } else {
@@ -68,7 +68,7 @@ struct LazySegmentTree {
             return info[p];
         }
         int m = (l + r) / 2;
-        push(p);
+        push(p, r - l);
         return rangeQuery(2 * p, l, m, x, y) + rangeQuery(2 * p + 1, m, r, x, y);
     }
     Info rangeQuery(int l, int r) {
@@ -79,11 +79,11 @@ struct LazySegmentTree {
             return;
         }
         if (l >= x && r <= y) {
-            apply(p, v);
+            apply(p, v, r - l);
             return;
         }
         int m = (l + r) / 2;
-        push(p);
+        push(p, r - l);
         rangeApply(2 * p, l, m, x, y, v);
         rangeApply(2 * p + 1, m, r, x, y, v);
         pull(p);
@@ -103,7 +103,7 @@ struct LazySegmentTree {
             return l;
         }
         int m = (l + r) / 2;
-        push(p);
+        push(p, r - l);
         int res = findFirst(2 * p, l, m, x, y, pred);
         if (res == -1) {
             res = findFirst(2 * p + 1, m, r, x, y, pred);
@@ -126,7 +126,7 @@ struct LazySegmentTree {
             return l;
         }
         int m = (l + r) / 2;
-        push(p);
+        push(p, r - l);
         int res = findLast(2 * p + 1, m, r, x, y, pred);
         if (res == -1) {
             res = findLast(2 * p, l, m, x, y, pred);
@@ -140,19 +140,19 @@ struct LazySegmentTree {
 };
  
 struct Tag {
-  void apply(const Tag &t) & {
-    
+  void apply(const Tag &t, int len) & {
+
   }
 };
  
-struct Info { 
-  void apply(const Tag &t) & {
-  
+struct Info {
+  void apply(const Tag &t, int len) & {
+    
   }
 };
  
 Info operator+(const Info &a, const Info &b) {
   Info c;
-  
+
   return c;
 }

@@ -1,12 +1,14 @@
 #include <bits/stdc++.h>
 #define int long long
 
+using i128 = __int128;
+
 void solve() {
   int n, m, k, x;
   std::cin >> n >> m >> k >> x;
-  std::vector<__int128> b(n + 1), c(n + 1);
+  std::vector<i128> b(n + 1), c(n + 1);
   std::vector<int> p(n + 1);
-  __int128 l = 0, r = 0;
+  i128 l = 0, r = 0;
   for (int i = 1; i <= n; i++) {
     p[i] = i;
     int x, y;
@@ -17,8 +19,12 @@ void solve() {
   std::sort(p.begin() + 1, p.end(), [&](const int &x, const int &y) {
     return c[x] - k * b[x] > c[y] - k * b[y];
   });
+  if (n * x < m) {
+    std::cout << "NO\n";
+    return;
+  }
   for (int i = 1; i <= n; i++) {
-    __int128 v;
+    i128 v;
     if (m >= x) {
       v = x;
       m -= x;
@@ -27,8 +33,11 @@ void solve() {
       m = 0;
     }
     l += k * v * v + v * (c[p[i]] - k * b[p[i]]);
+    if (l < 0) {
+      std::cout << "NO\n";
+      return;
+    }
   }
-  // std::cerr << l << ' ' << r << '\n';
   std::cout << (l > r ? "YES" : "NO") << '\n';
 }
 

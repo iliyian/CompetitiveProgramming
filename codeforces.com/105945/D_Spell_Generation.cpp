@@ -2,11 +2,11 @@
 #define int long long
 
 void solve() {
-  std::string s;
-  std::cin >> s;
+  std::string str;
+  std::cin >> str;
   int ans = 0;
-  for (int i = 0; i < s.size(); i++) {
-    ans += (s[i] - '0') << (s.size() - i - 1);
+  for (int i = 0; i < str.size(); i++) {
+    ans += (str[i] - '0') << (str.size() - i - 1);
   }
   std::cout << ans << '\n';
 }

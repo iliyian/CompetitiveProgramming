@@ -1,45 +1,99 @@
+/*
+
+LLLLLLLLLLL             IIIIIIIIIIYYYYYYY       YYYYYYYIIIIIIIIII               AAA               NNNNNNNN        NNNNNNNN
+L:::::::::L             I::::::::IY:::::Y       Y:::::YI::::::::I              A:::A              N:::::::N       N::::::N
+L:::::::::L             I::::::::IY:::::Y       Y:::::YI::::::::I             A:::::A             N::::::::N      N::::::N
+LL:::::::LL             II::::::IIY::::::Y     Y::::::YII::::::II            A:::::::A            N:::::::::N     N::::::N
+  L:::::L                 I::::I  YYY:::::Y   Y:::::YYY  I::::I             A:::::::::A           N::::::::::N    N::::::N
+  L:::::L                 I::::I     Y:::::Y Y:::::Y     I::::I            A:::::A:::::A          N:::::::::::N   N::::::N
+  L:::::L                 I::::I      Y:::::Y:::::Y      I::::I           A:::::A A:::::A         N:::::::N::::N  N::::::N
+  L:::::L                 I::::I       Y:::::::::Y       I::::I          A:::::A   A:::::A        N::::::N N::::N N::::::N
+  L:::::L                 I::::I        Y:::::::Y        I::::I         A:::::A     A:::::A       N::::::N  N::::N:::::::N
+  L:::::L                 I::::I         Y:::::Y         I::::I        A:::::AAAAAAAAA:::::A      N::::::N   N:::::::::::N
+  L:::::L                 I::::I         Y:::::Y         I::::I       A:::::::::::::::::::::A     N::::::N    N::::::::::N
+  L:::::L         LLLLLL  I::::I         Y:::::Y         I::::I      A:::::AAAAAAAAAAAAA:::::A    N::::::N     N:::::::::N
+LL:::::::LLLLLLLLL:::::LII::::::II       Y:::::Y       II::::::II   A:::::A             A:::::A   N::::::N      N::::::::N
+L::::::::::::::::::::::LI::::::::I    YYYY:::::YYYY    I::::::::I  A:::::A               A:::::A  N::::::N       N:::::::N
+L::::::::::::::::::::::LI::::::::I    Y:::::::::::Y    I::::::::I A:::::A                 A:::::A N::::::N        N::::::N
+LLLLLLLLLLLLLLLLLLLLLLLLIIIIIIIIII    YYYYYYYYYYYYY    IIIIIIIIIIAAAAAAA                   AAAAAAANNNNNNNN         NNNNNNN
+
+ * 
+ * ==============================================================================
+ * @Author  : iliyian
+ * @File    : B.cpp
+ * @Time    : 2025-11-01 15:25:17
+ * @Comment : 
+ * ==============================================================================
+*/
+
 #include <bits/stdc++.h>
-using namespace std;
+#define int long long
 
 void solve() {
-  string a[3];
-  for (int i = 0; i < 3; i++)
-    cin >> a[i];
+  std::vector<std::string> a(3);
   for (int i = 0; i < 3; i++) {
-    string cur;
+    std::cin >> a[i];
+  }
+  for (int i = 0; i < 3; i++) {
+    bool flag = true;
     for (int j = 0; j < 3; j++) {
-      cur.push_back(a[i][j]);
+      if (a[i][j] != a[i][0]) {
+        flag = false;
+        break;
+      }
     }
-    if (cur[0] == cur[1] && cur[1] == cur[2] && cur[0] != '.') {
-      cout << cur[0] << '\n';
+    if (flag && a[i][0] != '.') {
+      std::cout << a[i][0] << '\n';
       return;
     }
   }
-  for (int i = 0; i < 3; i++) {
-    string cur;
-    for (int j = 0; j < 3; j++) {
-      cur.push_back(a[j][i]);
+  for (int j = 0; j < 3; j++) {
+    bool flag = true;
+    for (int i = 0; i < 3; i++) {
+      if (a[i][j] != a[0][j]) {
+        flag = false;
+        break;
+      }
     }
-    if (cur[0] == cur[1] && cur[1] == cur[2] && cur[0] != '.') {
-      cout << cur[0] << '\n';
+    if (flag && a[0][j] != '.') {
+      std::cout << a[0][j] << '\n';
       return;
     }
   }
-  if (a[0][0] == a[1][1] && a[0][0] == a[2][2] && a[0][0] != '.') {
-    cout << a[0][0] << '\n';
+  bool flag = true;
+  for (int i = 0; i < 3; i++) {
+    if (a[i][i] != a[0][0]) {
+      flag = false;
+      break;
+    }
+  }
+  if (flag && a[0][0] != '.') {
+    std::cout << a[0][0] << '\n';
     return;
   }
-  if (a[0][2] == a[1][1] && a[1][1] == a[2][0] && a[0][0] != '.') {
-    cout << a[0][2] << '\n';
+  flag = true;
+  for (int i = 0; i < 3; i++) {
+    if (a[2 - i][i] != a[2][0]) {
+      flag = false;
+      break;
+    }
+  }
+  if (flag && a[2][0] != '.') {
+    std::cout << a[2][0] << '\n';
     return;
   }
-  cout << "DRAW" << '\n';
+  std::cout << "DRAW\n";
 }
 
-int main() {
-  ios::sync_with_stdio(false); cin.tie(0);
-  freopen("B.in", "r", stdin);
-  freopen("B.out", "w", stdout);
-  int _; cin >> _;
-  while (_--) solve();
+int32_t main() {
+  std::cin.tie(nullptr)->sync_with_stdio(false);
+
+  int t = 1;
+  std::cin >> t;
+
+  while (t--) {
+    solve();
+  }
+
+  return 0;
 }

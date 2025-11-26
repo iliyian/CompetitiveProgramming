@@ -23,3 +23,7 @@ exe
 *.h
 *.xml
 *.iml
+
+*.bin
+*.prob
+*.png
