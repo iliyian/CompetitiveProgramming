@@ -20,45 +20,65 @@ LLLLLLLLLLLLLLLLLLLLLLLLIIIIIIIIII    YYYYYYYYYYYYY    IIIIIIIIIIAAAAAAA        
  * 
  * ==============================================================================
  * @Author  : iliyian
- * @File    : C_To_Become_Max.cpp
- * @Time    : 2025-11-22 13:16:40
- * @Comment : 原来某些时候，定义的状态的某一维是可以不用考虑开数组的！！！！！！
-              顺便原来dp套二分不太行，二分套dp就很可以......
-              顺便dp可以递归可还行
+ * @File    : A.cpp
+ * @Time    : 2025-11-26 22:53:04
+ * @Comment : 
  * ==============================================================================
 */
 
 #include <bits/stdc++.h>
 #define int long long
 
+int tot = 0;
+
+int ask(int x, int k) {
+  ++tot;
+  std::cout << "? " << x << ' ' << k << std::endl;
+  int ans;
+  std::cin >> ans;
+  return ans;
+}
+
 void solve() {
-  int n, k;
-  std::cin >> n >> k;
-  std::vector<int> a(n + 1);
-  int ans = 0;
-  for (int i = 1; i <= n; i++) {
-    std::cin >> a[i];
+  tot = 0;
+  int n;
+  std::cin >> n;
+  std::vector<std::vector<int>> g(n + 1);
+  std::vector<int> dep(n + 1);
+  int mxdep = 0;
+  for (int i = 2; i <= n; i++) {
+    int x;
+    std::cin >> x;
+    g[x].push_back(i);
+    dep[i] = dep[x] + 1;
+    mxdep = std::max(mxdep, dep[i]);
   }
-  auto get = [&](this auto &&self, int i, int x) -> int {
-    if (a[i] >= x) return 0;
-    if (i == n) return LLONG_MAX / 3;
-    return x - a[i] + self(i + 1, x - 1);
-  };
-  auto check = [&](int mid) -> bool {
-    for (int i = 1; i <= n; i++) {
-      if (get(i, mid) <= k) {
-        return true;
-      }
-    }
-    return false;
-  };
-  int l = 1, r = 1e9;
+  int l = 0, r = mxdep, d = -1;
   while (l <= r) {
     int mid = (l + r) / 2;
-    if (check(mid)) l = mid + 1, ans = mid;
-    else r = mid - 1;
+    if (ask(1, mid)) r = mid - 1, d = mid;
+    else l = mid + 1;
   }
-  std::cout << ans << '\n';
+  int cnt = 0;
+  int ans = -1;
+  [&](this auto &&self, int u) -> void {
+    if (dep[u] == d) {
+      ans = u;
+      return;
+    }
+    if (g[u].size() == 1) {
+      self(g[u].front());
+      return;
+    }
+    int x = g[u].front(), y = g[u].back();
+    cnt++;
+    if (ask(x, d - dep[x])) {
+      self(x);
+      return;
+    }
+    self(y);
+  } (1);
+  std::cout << "! " << ans << std::endl;
 }
 
 int32_t main() {
@@ -67,7 +87,7 @@ int32_t main() {
   int t = 1;
   std::cin >> t;
 
-  for (int i = 1; i <= t; i++) {
+  while (t--) {
     solve();
   }
 

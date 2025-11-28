@@ -20,11 +20,9 @@ LLLLLLLLLLLLLLLLLLLLLLLLIIIIIIIIII    YYYYYYYYYYYYY    IIIIIIIIIIAAAAAAA        
  * 
  * ==============================================================================
  * @Author  : iliyian
- * @File    : C_To_Become_Max.cpp
- * @Time    : 2025-11-22 13:16:40
- * @Comment : 原来某些时候，定义的状态的某一维是可以不用考虑开数组的！！！！！！
-              顺便原来dp套二分不太行，二分套dp就很可以......
-              顺便dp可以递归可还行
+ * @File    : B_Fish_Graph.cpp
+ * @Time    : 2025-11-27 12:21:28
+ * @Comment : 这种找子图的题，还挺那啥的？adhoc？emmmm不知道
  * ==============================================================================
 */
 
@@ -32,33 +30,65 @@ LLLLLLLLLLLLLLLLLLLLLLLLIIIIIIIIII    YYYYYYYYYYYYY    IIIIIIIIIIAAAAAAA        
 #define int long long
 
 void solve() {
-  int n, k;
-  std::cin >> n >> k;
-  std::vector<int> a(n + 1);
-  int ans = 0;
-  for (int i = 1; i <= n; i++) {
-    std::cin >> a[i];
+  int n, m;
+  std::cin >> n >> m;
+  std::vector<std::vector<int>> g(n + 1);
+  std::vector<int> in(n + 1);
+  for (int i = 1; i <= m; i++) {
+    int x, y;
+    std::cin >> x >> y;
+    g[x].push_back(y);
+    g[y].push_back(x);
+    in[x]++, in[y]++;
   }
-  auto get = [&](this auto &&self, int i, int x) -> int {
-    if (a[i] >= x) return 0;
-    if (i == n) return LLONG_MAX / 3;
-    return x - a[i] + self(i + 1, x - 1);
-  };
-  auto check = [&](int mid) -> bool {
-    for (int i = 1; i <= n; i++) {
-      if (get(i, mid) <= k) {
-        return true;
+  for (int u = 1; u <= n; u++) {
+    if (in[u] >= 4) {
+      for (int v : g[u]) {
+        std::vector<int> pre(n + 1, -1);
+        std::queue<int> q;
+        q.push(v);
+        pre[v] = u;
+        while (!q.empty()) {
+          int x = q.front(); q.pop();
+          if (x == u) break;
+          for (int y : g[x]) {
+            if (x == v && y == u) continue;
+            if (pre[y] == -1) {
+              pre[y] = x;
+              q.push(y);
+            }
+          }
+        }
+        if (pre[u] != -1) {
+          std::cout << "YES\n";
+          std::vector<std::pair<int, int>> ans;
+          int now = u;
+          do {
+            ans.push_back({now, pre[now]});
+            int nxt = pre[now];
+            pre[now] = -2;
+            now = nxt;
+          } while (now != u);
+          int cnt = 0;
+          for (int v : g[u]) {
+            if (pre[v] != -2) {
+              ans.push_back({v, u});
+              cnt++;
+              if (cnt == 2) {
+                break;
+              }
+            }
+          }
+          std::cout << ans.size() << '\n';
+          for (auto [x, y] : ans) {
+            std::cout << x << ' ' << y << '\n';
+          }
+          return;
+        }
       }
     }
-    return false;
-  };
-  int l = 1, r = 1e9;
-  while (l <= r) {
-    int mid = (l + r) / 2;
-    if (check(mid)) l = mid + 1, ans = mid;
-    else r = mid - 1;
   }
-  std::cout << ans << '\n';
+  std::cout << "NO\n";
 }
 
 int32_t main() {
@@ -67,7 +97,7 @@ int32_t main() {
   int t = 1;
   std::cin >> t;
 
-  for (int i = 1; i <= t; i++) {
+  while (t--) {
     solve();
   }
 

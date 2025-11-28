@@ -20,11 +20,10 @@ LLLLLLLLLLLLLLLLLLLLLLLLIIIIIIIIII    YYYYYYYYYYYYY    IIIIIIIIIIAAAAAAA        
  * 
  * ==============================================================================
  * @Author  : iliyian
- * @File    : C_To_Become_Max.cpp
- * @Time    : 2025-11-22 13:16:40
- * @Comment : 原来某些时候，定义的状态的某一维是可以不用考虑开数组的！！！！！！
-              顺便原来dp套二分不太行，二分套dp就很可以......
-              顺便dp可以递归可还行
+ * @File    : B_Stay_or_Mirror.cpp
+ * @Time    : 2025-11-27 21:32:55
+ * @Comment : 不是哥们？不是哥们？不是哥们？你tmd这题开n=5000有意义吗？有意义吗？这tmd完全可以O(nlogn)啊？有病啊开5000？什么玩意？草
+              草，不是哥们？
  * ==============================================================================
 */
 
@@ -32,31 +31,22 @@ LLLLLLLLLLLLLLLLLLLLLLLLIIIIIIIIII    YYYYYYYYYYYYY    IIIIIIIIIIAAAAAAA        
 #define int long long
 
 void solve() {
-  int n, k;
-  std::cin >> n >> k;
+  int n;
+  std::cin >> n;
   std::vector<int> a(n + 1);
-  int ans = 0;
   for (int i = 1; i <= n; i++) {
     std::cin >> a[i];
   }
-  auto get = [&](this auto &&self, int i, int x) -> int {
-    if (a[i] >= x) return 0;
-    if (i == n) return LLONG_MAX / 3;
-    return x - a[i] + self(i + 1, x - 1);
-  };
-  auto check = [&](int mid) -> bool {
-    for (int i = 1; i <= n; i++) {
-      if (get(i, mid) <= k) {
-        return true;
-      }
+  int ans = 0;
+  for (int i = 1; i <= n; i++) {
+    int l = 0, r = 0;
+    for (int j = 1; j < i; j++) {
+      l += a[j] > a[i];
     }
-    return false;
-  };
-  int l = 1, r = 1e9;
-  while (l <= r) {
-    int mid = (l + r) / 2;
-    if (check(mid)) l = mid + 1, ans = mid;
-    else r = mid - 1;
+    for (int j = i + 1; j <= n; j++) {
+      r += a[j] > a[i];
+    }
+    ans += std::min(l, r);
   }
   std::cout << ans << '\n';
 }
@@ -67,7 +57,7 @@ int32_t main() {
   int t = 1;
   std::cin >> t;
 
-  for (int i = 1; i <= t; i++) {
+  while (t--) {
     solve();
   }
 

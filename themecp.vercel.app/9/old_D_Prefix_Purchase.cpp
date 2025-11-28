@@ -20,11 +20,11 @@ LLLLLLLLLLLLLLLLLLLLLLLLIIIIIIIIII    YYYYYYYYYYYYY    IIIIIIIIIIAAAAAAA        
  * 
  * ==============================================================================
  * @Author  : iliyian
- * @File    : C_To_Become_Max.cpp
- * @Time    : 2025-11-22 13:16:40
- * @Comment : 原来某些时候，定义的状态的某一维是可以不用考虑开数组的！！！！！！
-              顺便原来dp套二分不太行，二分套dp就很可以......
-              顺便dp可以递归可还行
+ * @File    : D_Prefix_Purchase.cpp
+ * @Time    : 2025-11-27 21:41:02
+ * @Comment : 其实基本都想到的，但是“多余的后移完全基于前一步剩余的可后移数量，而不是第一步的可后移数量”，没有想到。
+              原来的 hack 也是找到的，9 11 13，然后k=13，应该从第二步再移到第三步的
+              我还以为这个hack的解决方法是倒着贪心，还是孤陋寡闻了。
  * ==============================================================================
 */
 
@@ -32,33 +32,39 @@ LLLLLLLLLLLLLLLLLLLLLLLLIIIIIIIIII    YYYYYYYYYYYYY    IIIIIIIIIIAAAAAAA        
 #define int long long
 
 void solve() {
-  int n, k;
-  std::cin >> n >> k;
+  int n;
+  std::cin >> n;
   std::vector<int> a(n + 1);
-  int ans = 0;
   for (int i = 1; i <= n; i++) {
     std::cin >> a[i];
   }
-  auto get = [&](this auto &&self, int i, int x) -> int {
-    if (a[i] >= x) return 0;
-    if (i == n) return LLONG_MAX / 3;
-    return x - a[i] + self(i + 1, x - 1);
-  };
-  auto check = [&](int mid) -> bool {
-    for (int i = 1; i <= n; i++) {
-      if (get(i, mid) <= k) {
-        return true;
-      }
+  int k;
+  std::cin >> k;
+  std::vector<int> p;
+  int mn = LLONG_MAX / 3;
+  for (int i = n; i >= 1; i--) {
+    if (a[i] < mn) {
+      p.push_back(i);
+      mn = a[i];
     }
-    return false;
-  };
-  int l = 1, r = 1e9;
-  while (l <= r) {
-    int mid = (l + r) / 2;
-    if (check(mid)) l = mid + 1, ans = mid;
-    else r = mid - 1;
   }
-  std::cout << ans << '\n';
+  std::vector<int> ans(n + 2);
+  std::ranges::reverse(p);
+  int t = k / a[p.front()];
+  k %= a[p.front()];
+  ans[1] += t, ans[p.front() + 1] -= t;
+  for (int i = 1; i < p.size(); i++) {
+    int now = k / (a[p[i]] - a[p[i - 1]]);
+    now = std::min(now, t);
+    k -= (a[p[i]] - a[p[i - 1]]) * now;
+    ans[p[i - 1] + 1] += now, ans[p[i] + 1] -= now;
+    t = now;
+  }
+  for (int i = 1; i <= n; i++) {
+    ans[i] += ans[i - 1];
+    std::cout << ans[i] << ' ';
+  }
+  std::cout << '\n';
 }
 
 int32_t main() {
@@ -67,7 +73,7 @@ int32_t main() {
   int t = 1;
   std::cin >> t;
 
-  for (int i = 1; i <= t; i++) {
+  while (t--) {
     solve();
   }
 

@@ -20,11 +20,9 @@ LLLLLLLLLLLLLLLLLLLLLLLLIIIIIIIIII    YYYYYYYYYYYYY    IIIIIIIIIIAAAAAAA        
  * 
  * ==============================================================================
  * @Author  : iliyian
- * @File    : C_To_Become_Max.cpp
- * @Time    : 2025-11-22 13:16:40
- * @Comment : 原来某些时候，定义的状态的某一维是可以不用考虑开数组的！！！！！！
-              顺便原来dp套二分不太行，二分套dp就很可以......
-              顺便dp可以递归可还行
+ * @File    : C_Alya_and_Permutation.cpp
+ * @Time    : 2025-11-27 20:30:04
+ * @Comment : 
  * ==============================================================================
 */
 
@@ -32,33 +30,51 @@ LLLLLLLLLLLLLLLLLLLLLLLLIIIIIIIIII    YYYYYYYYYYYYY    IIIIIIIIIIAAAAAAA        
 #define int long long
 
 void solve() {
-  int n, k;
-  std::cin >> n >> k;
-  std::vector<int> a(n + 1);
-  int ans = 0;
-  for (int i = 1; i <= n; i++) {
-    std::cin >> a[i];
+  int n;
+  std::cin >> n;
+  int k = std::__lg(n);
+  std::vector<int> vis(n + 1), ans;
+  if (n == 5) {
+    std::cout << "5\n2 1 3 4 5\n";
+    return;
   }
-  auto get = [&](this auto &&self, int i, int x) -> int {
-    if (a[i] >= x) return 0;
-    if (i == n) return LLONG_MAX / 3;
-    return x - a[i] + self(i + 1, x - 1);
-  };
-  auto check = [&](int mid) -> bool {
-    for (int i = 1; i <= n; i++) {
-      if (get(i, mid) <= k) {
-        return true;
-      }
+  if (n == 6) {
+    std::cout << "7\n1 2 4 6 5 3\n";
+    return;
+  }
+  if (n == 7) {
+    std::cout << "7\n2 4 5 1 3 6 7\n";
+    return;
+  }
+  if (n % 2 == 1) {
+    std::cout << n << '\n';
+  } else {
+    std::cout << (1 << (k + 1)) - 1 << '\n';
+  }
+  for (int i = 1; i <= k; i++) {
+    vis[(1 << i) - 1] = 1;
+    ans.push_back((1 << i) - 1);
+    if (i == k - 1) {
+      vis[(1 << i) + 1] = 1;
+      ans.push_back((1 << i) + 1);
+    } else {
+      vis[1 << i] = 1;
+      ans.push_back((1 << i));
     }
-    return false;
-  };
-  int l = 1, r = 1e9;
-  while (l <= r) {
-    int mid = (l + r) / 2;
-    if (check(mid)) l = mid + 1, ans = mid;
-    else r = mid - 1;
   }
-  std::cout << ans << '\n';
+  if (n % 2 == 1) {
+    ans.push_back(n);
+    vis[n] = 1;
+  }
+  for (int i = 1; i <= n; i++) {
+    if (!vis[i]) {
+      std::cout << i << ' ';
+    }
+  }
+  for (auto i : ans) {
+    std::cout << i << ' ';
+  }
+  std::cout << '\n';
 }
 
 int32_t main() {
@@ -67,7 +83,7 @@ int32_t main() {
   int t = 1;
   std::cin >> t;
 
-  for (int i = 1; i <= t; i++) {
+  while (t--) {
     solve();
   }
 
