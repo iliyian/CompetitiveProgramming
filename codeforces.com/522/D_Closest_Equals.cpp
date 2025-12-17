@@ -1,3 +1,34 @@
+/*
+
+LLLLLLLLLLL             IIIIIIIIIIYYYYYYY       YYYYYYYIIIIIIIIII               AAA               NNNNNNNN        NNNNNNNN
+L:::::::::L             I::::::::IY:::::Y       Y:::::YI::::::::I              A:::A              N:::::::N       N::::::N
+L:::::::::L             I::::::::IY:::::Y       Y:::::YI::::::::I             A:::::A             N::::::::N      N::::::N
+LL:::::::LL             II::::::IIY::::::Y     Y::::::YII::::::II            A:::::::A            N:::::::::N     N::::::N
+  L:::::L                 I::::I  YYY:::::Y   Y:::::YYY  I::::I             A:::::::::A           N::::::::::N    N::::::N
+  L:::::L                 I::::I     Y:::::Y Y:::::Y     I::::I            A:::::A:::::A          N:::::::::::N   N::::::N
+  L:::::L                 I::::I      Y:::::Y:::::Y      I::::I           A:::::A A:::::A         N:::::::N::::N  N::::::N
+  L:::::L                 I::::I       Y:::::::::Y       I::::I          A:::::A   A:::::A        N::::::N N::::N N::::::N
+  L:::::L                 I::::I        Y:::::::Y        I::::I         A:::::A     A:::::A       N::::::N  N::::N:::::::N
+  L:::::L                 I::::I         Y:::::Y         I::::I        A:::::AAAAAAAAA:::::A      N::::::N   N:::::::::::N
+  L:::::L                 I::::I         Y:::::Y         I::::I       A:::::::::::::::::::::A     N::::::N    N::::::::::N
+  L:::::L         LLLLLL  I::::I         Y:::::Y         I::::I      A:::::AAAAAAAAAAAAA:::::A    N::::::N     N:::::::::N
+LL:::::::LLLLLLLLL:::::LII::::::II       Y:::::Y       II::::::II   A:::::A             A:::::A   N::::::N      N::::::::N
+L::::::::::::::::::::::LI::::::::I    YYYY:::::YYYY    I::::::::I  A:::::A               A:::::A  N::::::N       N:::::::N
+L::::::::::::::::::::::LI::::::::I    Y:::::::::::Y    I::::::::I A:::::A                 A:::::A N::::::N        N::::::N
+LLLLLLLLLLLLLLLLLLLLLLLLIIIIIIIIII    YYYYYYYYYYYYY    IIIIIIIIIIAAAAAAA                   AAAAAAANNNNNNNN         NNNNNNN
+
+ * 
+ * ==============================================================================
+ * @Author  : iliyian
+ * @File    : D_Closest_Equals.cpp
+ * @Time    : 2025-12-08 20:16:07
+ * @Comment : 
+ * ==============================================================================
+*/
+
+#include <bits/stdc++.h>
+#define int long long
+
 template<class Info, class Tag>
 struct LazySegmentTree {
     int n;
@@ -138,21 +169,67 @@ struct LazySegmentTree {
         return findLast(1, 0, n, l, r, pred);
     }
 };
-
+ 
 struct Tag {
+  int mn = LLONG_MAX / 3;
   void apply(const Tag &t, int len) & {
-
+    mn = std::min(mn, t.mn);
   }
 };
-
+ 
 struct Info {
+  int mn = LLONG_MAX / 3;
   void apply(const Tag &t, int len) & {
-    
+    mn = std::min(mn, t.mn);
   }
 };
-
+ 
 Info operator+(const Info &a, const Info &b) {
   Info c;
-
+  c.mn = std::min(a.mn, b.mn);
   return c;
+}
+
+void solve() {
+  int n, m;
+  std::cin >> n >> m;
+  std::vector<int> a(n + 1);
+  for (int i = 1; i <= n; i++) {
+    std::cin >> a[i];
+  }
+  std::vector<std::vector<std::pair<int, int>>> ask(n + 1);
+  for (int i = 1; i <= m; i++) {
+    int l, r;
+    std::cin >> l >> r;
+    ask[r].push_back({l, i});
+  }
+  std::vector<int> ans(m + 1);
+  std::map<int, int> mp;
+  LazySegmentTree<Info, Tag> tr(n + 1);
+  for (int r = 1; r <= n; r++) {
+    if (mp.count(a[r])) {
+      tr.rangeApply(1, mp[a[r]] + 1, Tag{r - mp[a[r]]});
+    }
+    mp[a[r]] = r;
+    for (auto [l, idx] : ask[r]) {
+      ans[idx] = tr.rangeQuery(l, l + 1).mn;
+    }
+  }
+  for (int i = 1; i <= m; i++) {
+    std::cout << (ans[i] == LLONG_MAX / 3 ? -1 : ans[i]) << '\n';
+  }
+  // std::cout << '\n';
+}
+
+int32_t main() {
+  std::cin.tie(nullptr)->sync_with_stdio(false);
+
+  int t = 1;
+  // std::cin >> t;
+
+  while (t--) {
+    solve();
+  }
+
+  return 0;
 }

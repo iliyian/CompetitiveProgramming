@@ -6,7 +6,11 @@ void solve() {
   std::cin >> n >> k;
   std::string str;
   std::cin >> str;
-  
+  if (std::ranges::count(str, '1') <= k) {
+    std::cout << "Alice\n";
+    return;
+  }
+  std::cout << (k > n / 2 ? "Alice" : "Bob") << '\n';
 }
 
 int32_t main() {
