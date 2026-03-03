@@ -9,7 +9,8 @@ void solve() {
     std::cin >> a[i];
   }
   std::vector<std::vector<int>> f(n + 1, std::vector<int>(n + 1)), g(n + 1, std::vector<int>(n + 1));
-  std::ranges::fill(g[0], 1);
+//  std::ranges::fill(g[0], 1);
+  std::fill(g[0].begin(), g[0].end(), 1);
   for (int i = 1; i <= n; i++) {
     int mn = a[i];
     f[i][i] = g[i - 1][i];

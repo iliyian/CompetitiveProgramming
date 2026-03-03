@@ -27,3 +27,8 @@ exe
 *.bin
 *.prob
 *.png
+
+.*
+*.pdf
+*.wav
+*.txt
