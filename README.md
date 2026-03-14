@@ -59,14 +59,14 @@
 | [dijkstra](./Templates/dijkstra/) | Dijkstra 最短路 |
 | [SPFA](./Templates/SPFA/) | SPFA 最短路 |
 | [SCC](./Templates/SCC/) | 强连通分量（Tarjan） |
-| [bcc&bridge](./Templates/bcc&bridge/) | 点双连通分量 & 桥 |
+| [bcc_bridge](./Templates/bcc_bridge/) | 点双连通分量 & 桥 |
 | [cut_point](./Templates/cut_point/) | 割点 |
 | [max-flow](./Templates/max-flow/) | 最大流（Dinic） |
 | [min-cost](./Templates/min-cost/) | 最小费用流 |
 | [min-cut](./Templates/min-cut/) | 最小割 |
 | [hld](./Templates/hld/) | 重链剖分 |
 | [LCA](./Templates/LCA/) | 最近公共祖先 |
-| [欧拉序O(1)LCA](./Templates/欧拉序O(1)LCA/) | 欧拉序 O(1) LCA |
+| [欧拉序_O1_LCA](./Templates/欧拉序_O1_LCA/) | 欧拉序 O(1) LCA |
 | [欧拉路](./Templates/欧拉路/) | 欧拉路 / 欧拉回路 |
 | [tree_diameter](./Templates/tree_diameter/) | 树的直径 |
 | [点分治](./Templates/点分治/) | 点分治 |
@@ -111,12 +111,12 @@
 |------|------|
 | [FFT](./Templates/FFT/) | 快速傅里叶变换 |
 | [ntt](./Templates/ntt/) | 数论变换 NTT |
-| [Pollard_Rho && Miller_Rabin](./Templates/Pollard_Rho%20%26%26%20Miller_Rabin/) | 大数分解 & 素性测试 |
+| [Pollard_Rho_Miller_Rabin](./Templates/Pollard_Rho_Miller_Rabin/) | 大数分解 & 素性测试 |
 | [prime_sieve](./Templates/prime_sieve/) | 素数筛（线性筛） |
 | [分解质因数](./Templates/分解质因数/) | 质因数分解 |
 | [euler_totient](./Templates/euler_totient/) | 欧拉函数 |
 | [ex_euler](./Templates/ex_euler/) | 扩展欧拉定理 |
-| [C(n,m)%p](./Templates/C(n,m)%p/) | 组合数取模（Lucas 定理） |
+| [C_n_m_mod_p](./Templates/C_n_m_mod_p/) | 组合数取模（Lucas 定理） |
 | [CRT](./Templates/CRT/) | 中国剩余定理 |
 | [inverse_exgcd](./Templates/inverse_exgcd/) | 逆元 & 扩展 GCD |
 | [gcd_lcm](./Templates/gcd_lcm/) | GCD & LCM |
@@ -159,7 +159,7 @@
 | [basis](./Templates/basis/) | 线性基（异或基） |
 | [mo-algorithm](./Templates/mo-algorithm/) | 莫队算法 |
 | [三分](./Templates/三分/) | 三分搜索（整数域） |
-| [ternary search](./Templates/ternary%20search/) | 三分搜索（实数域） |
+| [ternary_search](./Templates/ternary_search/) | 三分搜索（实数域） |
 | [尺取](./Templates/尺取/) | 双指针 / 滑动窗口 |
 | [adjacent_diff](./Templates/adjacent_diff/) | 差分数组 |
 | [二维差分与前缀和](./Templates/二维差分与前缀和/) | 二维差分 & 前缀和 |
@@ -218,10 +218,10 @@
 | ICPC 2022 Hangzhou | [icpc2022hangzhou/](./icpc2022hangzhou/) |
 | CCPC | [ccpc/](./ccpc/) |
 | 天梯赛 2025 | [天梯赛2025/](./天梯赛2025/) |
-| 2024 ZJUT 迎新赛预赛 | [2024ZJUT迎新赛预赛_A~M/](./2024ZJUT迎新赛预赛_A~M/) |
+| 2024 ZJUT 迎新赛预赛 | [2024ZJUT迎新赛预赛_A-M_satsky/](./2024ZJUT迎新赛预赛_A-M_satsky/) |
 | 网络赛 | [网络赛/](./网络赛/) |
 | Daily CF Problems | [Daily_CF_Problems/](./Daily_CF_Problems/) |
-| Jiangly 模板参考 | [jiangly's/](./jiangly's/) |
+| Jiangly 模板参考 | [jiangly/](./jiangly/) |
 
 ---
 
@@ -243,7 +243,7 @@ CompetitiveProgramming/
 ├── icpc2022hangzhou/       # ICPC 2022 Hangzhou
 ├── ccpc/                   # CCPC 题解
 ├── Daily_CF_Problems/      # 每日 CF 题目
-├── jiangly's/              # jiangly 模板参考
+├── jiangly/                # jiangly 模板参考
 └── play/                   # 练习 / 实验代码
 ```
 
