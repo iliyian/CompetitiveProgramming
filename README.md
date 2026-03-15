@@ -44,7 +44,7 @@
 | [dsu](./Templates/dsu/) | 并查集 |
 | [带距离权并查集带路径压缩](./Templates/带距离权并查集带路径压缩/) | 带权并查集 |
 | [fhqtreap.cpp](./Templates/fhqtreap.cpp) | FHQ Treap（无旋 Treap） |
-| [SB树](./Templates/SB树/) | 替罪羊树 / Size-Balanced Tree |
+| [SB树](./Templates/SB树/) | Stern–Brocot 树 |
 | [pb_ds_tree](./Templates/pb_ds_tree/) | STL pb_ds 平衡树扩展 |
 | [pb_ds可并堆](./Templates/pb_ds可并堆/) | 可并堆（左偏树） |
 | [链表](./Templates/链表/) | 双向链表 |
